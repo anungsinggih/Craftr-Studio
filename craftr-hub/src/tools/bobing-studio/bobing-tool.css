@@ -595,17 +595,19 @@ textarea {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: 16px;
+  align-items: stretch;
 }
 
 .viewer {
   background: #ffffff;
   border: 1px solid var(--craftr-line);
   border-radius: 22px;
-  min-height: 420px;
   padding: 16px;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
+  min-width: 0;
+  min-height: 0;
   box-shadow: var(--craftr-shadow);
 }
 
@@ -613,13 +615,22 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   color: var(--craftr-text);
   font-size: 13px;
   font-weight: 900;
   letter-spacing: -0.005em;
 }
 
+.viewer-head > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .viewer-head > span:last-child {
+  flex-shrink: 0;
   color: var(--craftr-muted);
   font-weight: 700;
   font-size: 11.5px;
@@ -627,7 +638,11 @@ textarea {
 }
 
 .canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   min-height: 0;
+  max-height: min(540px, 60dvh);
   border-radius: 14px;
   background:
     linear-gradient(45deg, rgba(148, 163, 184, 0.09) 25%, transparent 25%),
@@ -640,7 +655,6 @@ textarea {
   display: grid;
   place-items: center;
   overflow: hidden;
-  position: relative;
   box-shadow: inset 0 0 0 1px rgba(11, 18, 32, 0.04);
 }
 
@@ -698,9 +712,10 @@ textarea {
 .canvas img {
   max-width: 100%;
   max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   display: block;
-  border-radius: 10px;
 }
 
 .empty {
@@ -862,7 +877,16 @@ textarea {
 }
 
 /* ─── Responsive ──────────────────────────────────────────────────── */
-@media (max-width: 980px) {
+
+/* Medium desktop: Stage stays 2-column but canvas scales down */
+@media (max-width: 1200px) {
+  .canvas {
+    max-height: min(480px, 56dvh);
+  }
+}
+
+/* Tablet: sidebar stacks above main, stage goes single-column */
+@media (max-width: 1100px) {
   .shell {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -877,8 +901,8 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .viewer {
-    min-height: 360px;
+  .canvas {
+    max-height: min(520px, 54dvh);
   }
 }
 
@@ -982,9 +1006,8 @@ textarea {
     gap: 12px;
   }
 
-  .viewer,
   .canvas {
-    min-height: 260px;
+    max-height: min(60dvh, 480px);
   }
 
   .viewer {

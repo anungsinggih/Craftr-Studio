@@ -136,7 +136,7 @@ async function detectColorsApi(baseImage, baseMime) {
         ],
       },
     ],
-    generationConfig: { temperature: 0.1 },
+    generationConfig: { candidateCount: 1, temperature: 0.1 },
   };
 
   const response = await backoffFetch(buildApiUrl(), {
@@ -151,13 +151,33 @@ async function detectColorsApi(baseImage, baseMime) {
   if (!textPart) throw new Error('No response from color detection.');
   const raw = textPart.text.replace(/```json\s*|```/g, '').trim();
   const parsed = JSON.parse(raw);
-  if (!Array.isArray(parsed)) throw new Error('Invalid color detection result.');
-  return parsed.slice(0, 6).map((item) => ({
-    originalColor: item.originalColor || 'Unknown',
-    originalHex: normalizeHex(item.originalHex),
-    partDescription: item.partDescription || 'garment region',
-    selected: true,
+  const arr = Array.isArray(parsed) ? parsed : (parsed?.colors || []);
+  const filtered = arr.filter((item) => item && item.editable !== false).slice(0, 6);
+  if (!filtered.length) throw new Error('Tidak ada warna produk yang bisa dideteksi.');
+  // Match HTML behavior: only the first detected region is auto-selected.
+  // This prevents AI from trying to recolor every region to the same target color.
+  return filtered.map((item, index) => ({
+    originalColor: item.originalColor || item.color || `Color ${index + 1}`,
+    originalHex: normalizeHex(item.originalHex || item.hex || '#777777'),
+    partDescription: item.partDescription || item.area || 'garment fabric region',
+    selected: index === 0,
   }));
+}
+
+/**
+ * Build the detected regions description that the HTML version used.
+ * Format: "1. red (#ff0000) on main body panel"
+ * This is what the AI expects — each line describes WHERE a region is,
+ * not where it should be recolored to (that's already in the TASK line).
+ */
+function formatDetectedRegions(selectedRegions) {
+  if (!selectedRegions.length) return '';
+  return selectedRegions.map((item, index) => {
+    const color = item.originalColor || item.colorName || `color ${index + 1}`;
+    const hex = normalizeHex(item.originalHex || item.hex || '');
+    const part = item.partDescription || item.area || 'garment region';
+    return `${index + 1}. ${color} (${hex}) on ${part}`;
+  }).join('\n');
 }
 
 /* ─── Main Component ─────────────────────────────────────────────────── */
@@ -298,9 +318,7 @@ function BobingStudio() {
       });
     }
     const selectedRegions = detectedColors.filter((c) => c.selected);
-    const detectedRegionsText = selectedRegions.length
-      ? selectedRegions.map((c) => `- ${c.partDescription}: ${c.originalColor} (${c.originalHex}) → recolor to ${colorName || targetColor}`).join('\n')
-      : '';
+    const detectedRegionsText = formatDetectedRegions(selectedRegions);
     return buildRecolorPrompt({
       targetHex: normalizeHex(targetColor),
       colorName: colorName.trim(),
@@ -374,9 +392,7 @@ function BobingStudio() {
       for (let i = 0; i < QUICK_RECOLOR_COLORS.length; i++) {
         setBusyMessage(`Generating variant ${i + 1}/${QUICK_RECOLOR_COLORS.length}`);
         const [name, hex] = QUICK_RECOLOR_COLORS[i];
-        const detectedRegionsText = selectedRegions.length
-          ? selectedRegions.map((c) => `- ${c.partDescription}: ${c.originalColor} (${c.originalHex}) → recolor to ${name}`).join('\n')
-          : '';
+        const detectedRegionsText = formatDetectedRegions(selectedRegions);
         const prompt = buildRecolorPrompt({
           targetHex: hex,
           colorName: name,
