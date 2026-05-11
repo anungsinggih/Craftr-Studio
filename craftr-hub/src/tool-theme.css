@@ -1,27 +1,78 @@
+/* =============================================================================
+   CRAFTR GLOBAL THEME — Premium Light SaaS
+   - Shared design tokens across all tools
+   - Layered shadows, refined typography, subtle gradients
+   - Overrides legacy dark/Tailwind classes to unified light premium theme
+   ============================================================================= */
+
 :root {
   color-scheme: light;
-  --craftr-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --craftr-bg: #f7f8fc;
-  --craftr-bg-2: #eef7fb;
+
+  /* ─── Typography ──────────────────────────────────────────────────── */
+  --craftr-font: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --craftr-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* ─── Surfaces ────────────────────────────────────────────────────── */
+  --craftr-bg: #f4f5fa;
+  --craftr-bg-2: #eef3fb;
   --craftr-panel: #ffffff;
+  --craftr-panel-2: #fafbfe;
   --craftr-elevated: #f8fafc;
-  --craftr-line: #e6e8ef;
-  --craftr-muted-line: #eef2f7;
-  --craftr-text: #101828;
-  --craftr-muted: #667085;
-  --craftr-soft: #98a2b3;
+  --craftr-line: #e5e8f0;
+  --craftr-line-strong: #d6dae5;
+  --craftr-muted-line: #eef1f6;
+
+  /* ─── Text ────────────────────────────────────────────────────────── */
+  --craftr-text: #0b1220;
+  --craftr-text-2: #1f2937;
+  --craftr-muted: #5a6478;
+  --craftr-soft: #8b93a7;
+
+  /* ─── Brand / Accents ─────────────────────────────────────────────── */
   --craftr-accent: #7c3aed;
-  --craftr-accent-2: #00c4cc;
+  --craftr-accent-2: #06b6d4;
   --craftr-accent-3: #8b5cf6;
+  --craftr-accent-4: #ec4899;
   --craftr-accent-soft: #ecfeff;
   --craftr-accent-wash: #f5f3ff;
-  --craftr-focus: rgba(0, 196, 204, 0.28);
-  --craftr-green: #12b76a;
-  --craftr-red: #f04438;
+  --craftr-brand-gradient: linear-gradient(135deg, #06b6d4 0%, #7c3aed 50%, #ec4899 100%);
+  --craftr-brand-gradient-soft: linear-gradient(135deg, rgba(6, 182, 212, 0.14), rgba(124, 58, 237, 0.14) 50%, rgba(236, 72, 153, 0.12));
+
+  /* ─── Status ──────────────────────────────────────────────────────── */
+  --craftr-green: #10b981;
+  --craftr-green-soft: #ecfdf5;
   --craftr-amber: #f59e0b;
-  --craftr-shadow: 0 18px 46px rgba(16, 24, 40, 0.08);
-  --craftr-shadow-soft: 0 8px 22px rgba(16, 24, 40, 0.06);
+  --craftr-amber-soft: #fffbeb;
+  --craftr-red: #ef4444;
+  --craftr-red-soft: #fef2f2;
+
+  /* ─── Focus ───────────────────────────────────────────────────────── */
+  --craftr-focus: rgba(6, 182, 212, 0.32);
+  --craftr-focus-ring: 0 0 0 3px rgba(6, 182, 212, 0.22);
+
+  /* ─── Shadows (layered) ───────────────────────────────────────────── */
+  --craftr-shadow-xs: 0 1px 2px rgba(11, 18, 32, 0.04);
+  --craftr-shadow-sm: 0 2px 6px rgba(11, 18, 32, 0.05), 0 1px 2px rgba(11, 18, 32, 0.04);
+  --craftr-shadow: 0 10px 24px -8px rgba(11, 18, 32, 0.08), 0 4px 10px -2px rgba(11, 18, 32, 0.04);
+  --craftr-shadow-md: 0 18px 38px -12px rgba(11, 18, 32, 0.12), 0 8px 16px -4px rgba(11, 18, 32, 0.06);
+  --craftr-shadow-lg: 0 28px 56px -16px rgba(11, 18, 32, 0.16), 0 12px 22px -6px rgba(11, 18, 32, 0.08);
+  --craftr-shadow-brand: 0 14px 34px -10px rgba(124, 58, 237, 0.36), 0 6px 14px -4px rgba(6, 182, 212, 0.22);
+  --craftr-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  /* ─── Radii ───────────────────────────────────────────────────────── */
+  --craftr-radius-sm: 10px;
   --craftr-radius: 14px;
+  --craftr-radius-lg: 18px;
+  --craftr-radius-xl: 22px;
+  --craftr-radius-2xl: 26px;
+  --craftr-radius-pill: 999px;
+
+  /* ─── Motion ──────────────────────────────────────────────────────── */
+  --craftr-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --craftr-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --craftr-transition: 0.22s var(--craftr-ease);
+
+  /* ─── Legacy aliases (kept for backward compatibility) ─────────────── */
   --bg: var(--craftr-bg);
   --panel: var(--craftr-panel);
   --panel-2: var(--craftr-elevated);
@@ -33,7 +84,7 @@
   --soft: var(--craftr-soft);
   --green: var(--craftr-green);
   --red: var(--craftr-red);
-  --shadow: rgba(16, 24, 40, 0.08);
+  --shadow: rgba(11, 18, 32, 0.08);
   --radius: var(--craftr-radius);
   --gold: var(--craftr-accent);
   --gold-2: var(--craftr-accent-soft);
@@ -42,6 +93,7 @@
   --blue-soft: var(--craftr-accent-soft);
 }
 
+/* ─── Reset & base ──────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -51,10 +103,12 @@
 html,
 body {
   background:
-    radial-gradient(circle at 18% 8%, rgba(0, 196, 204, 0.12), transparent 28%),
-    radial-gradient(circle at 92% 4%, rgba(124, 58, 237, 0.11), transparent 26%),
-    linear-gradient(180deg, #ffffff 0%, var(--craftr-bg) 46%, #eef2f7 100%);
+    radial-gradient(1200px 600px at 12% -4%, rgba(6, 182, 212, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 94% -2%, rgba(124, 58, 237, 0.09), transparent 58%),
+    radial-gradient(700px 500px at 92% 102%, rgba(236, 72, 153, 0.06), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, var(--craftr-bg) 52%, #edf1f9 100%);
   font-family: var(--craftr-font);
+  font-feature-settings: "ss01", "cv11";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -62,7 +116,7 @@ body {
 
 body {
   color: var(--craftr-text);
-  letter-spacing: 0;
+  letter-spacing: -0.005em;
   font-family: var(--craftr-font);
 }
 
@@ -71,6 +125,7 @@ input,
 select,
 textarea {
   font: inherit;
+  letter-spacing: inherit;
 }
 
 button {
@@ -96,6 +151,12 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
+::selection {
+  color: #ffffff;
+  background: rgba(124, 58, 237, 0.76);
+}
+
+/* ─── Form controls — unified ───────────────────────────────────────── */
 textarea,
 input[type="text"],
 input[type="number"],
@@ -108,7 +169,19 @@ select {
   border-color: var(--craftr-line) !important;
   background: #ffffff !important;
   color: var(--craftr-text) !important;
-  box-shadow: none;
+  box-shadow: var(--craftr-shadow-xs);
+  transition: border-color var(--craftr-transition), box-shadow var(--craftr-transition);
+}
+
+textarea:hover,
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="search"]:hover,
+input[type="email"]:hover,
+input[type="url"]:hover,
+input[type="password"]:hover,
+select:hover {
+  border-color: var(--craftr-line-strong) !important;
 }
 
 textarea:focus,
@@ -119,9 +192,9 @@ input[type="email"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus,
 select:focus {
-  border-color: rgba(124, 58, 237, 0.46) !important;
-  outline: 2px solid rgba(0, 196, 204, 0.18) !important;
-  outline-offset: 0;
+  border-color: rgba(124, 58, 237, 0.5) !important;
+  outline: none !important;
+  box-shadow: var(--craftr-focus-ring) !important;
 }
 
 textarea::placeholder,
@@ -133,19 +206,16 @@ input[type="range"] {
   accent-color: var(--craftr-accent-2);
 }
 
-::selection {
-  color: #ffffff;
-  background: rgba(124, 58, 237, 0.72);
-}
-
+/* ─── Root containers ───────────────────────────────────────────────── */
 .craftr-native-root,
 .app,
 .shell,
 #root > div {
-  background: var(--craftr-bg) !important;
+  background: transparent !important;
   color: var(--craftr-text);
 }
 
+/* ─── Panels / Cards (global override) ──────────────────────────────── */
 .craftr-control-sheet,
 .craftr-tool-header,
 .craftr-card,
@@ -202,9 +272,10 @@ input[type="range"] {
 .shadow-lg,
 .shadow-xl,
 .shadow-2xl {
-  box-shadow: var(--craftr-shadow-soft) !important;
+  box-shadow: var(--craftr-shadow-sm) !important;
 }
 
+/* ─── Text normalization ────────────────────────────────────────────── */
 .text-slate-400,
 .text-slate-500,
 .text-gray-400,
@@ -247,6 +318,7 @@ label {
   color: var(--craftr-accent) !important;
 }
 
+/* ─── Borders ───────────────────────────────────────────────────────── */
 .border-slate-100,
 .border-slate-200,
 .border-gray-200,
@@ -263,6 +335,7 @@ label {
   border-color: var(--craftr-line) !important;
 }
 
+/* ─── Overlays & translucent surfaces ───────────────────────────────── */
 .dark\:bg-gray-900\/80,
 .dark\:bg-gray-900\/20,
 .dark\:bg-indigo-900\/20,
@@ -275,8 +348,11 @@ label {
 .bg-white\/40 {
   background: rgba(255, 255, 255, 0.88) !important;
   color: var(--craftr-text) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
+/* ─── Primary action buttons (global override) ──────────────────────── */
 .tab.active,
 .btn.primary,
 .primary-btn,
@@ -301,9 +377,10 @@ label {
 .bg-gradient-to-br,
 .from-indigo-500,
 .from-indigo-600 {
-  background: linear-gradient(135deg, var(--craftr-accent-2), #8b5cf6) !important;
-  border-color: rgba(124, 58, 237, 0.38) !important;
+  background: var(--craftr-brand-gradient) !important;
+  border-color: rgba(124, 58, 237, 0.42) !important;
   color: #ffffff !important;
+  box-shadow: var(--craftr-shadow-brand) !important;
 }
 
 .btn.primary:hover,
@@ -314,8 +391,15 @@ label {
 .bg-violet-600:hover,
 .bg-purple-600:hover,
 .bg-pink-600:hover {
-  filter: saturate(1.08) brightness(0.99);
+  filter: saturate(1.12) brightness(1.03);
   transform: translateY(-1px);
+  box-shadow: 0 18px 40px -10px rgba(124, 58, 237, 0.44), 0 8px 18px -4px rgba(6, 182, 212, 0.26) !important;
+}
+
+.btn.primary:active,
+.primary-btn:active,
+.craftr-button-primary:active {
+  transform: translateY(0);
 }
 
 .bg-green-600,
@@ -323,8 +407,10 @@ label {
   background: linear-gradient(135deg, #34d399, var(--craftr-green)) !important;
   border-color: var(--craftr-green) !important;
   color: #ffffff !important;
+  box-shadow: 0 12px 28px -8px rgba(16, 185, 129, 0.4) !important;
 }
 
+/* ─── Secondary buttons ─────────────────────────────────────────────── */
 .tab,
 .btn,
 .icon-btn,
@@ -350,7 +436,8 @@ label {
 .nudge-btn {
   background-color: var(--craftr-panel) !important;
   color: var(--craftr-text) !important;
-  box-shadow: var(--craftr-shadow-soft) !important;
+  box-shadow: var(--craftr-shadow-xs) !important;
+  transition: border-color var(--craftr-transition), background var(--craftr-transition), color var(--craftr-transition), transform var(--craftr-transition), box-shadow var(--craftr-transition);
 }
 
 .tab:hover,
@@ -362,11 +449,22 @@ label {
 .upload-label:hover,
 .preset:hover,
 .nudge-btn:hover {
-  border-color: rgba(124, 58, 237, 0.28) !important;
-  background: linear-gradient(135deg, rgba(236, 254, 255, 0.72), rgba(245, 243, 255, 0.86)) !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.82), rgba(245, 243, 255, 0.92)) !important;
   color: var(--craftr-accent) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--craftr-shadow-sm) !important;
 }
 
+.tab:active,
+.btn:active,
+.icon-btn:active,
+.secondary-btn:active,
+.craftr-button-secondary:active {
+  transform: translateY(0);
+}
+
+/* ─── Pills / badges ────────────────────────────────────────────────── */
 .pill,
 .step-dot,
 .mini-stat {
@@ -383,14 +481,14 @@ label {
 
 .pill.ok,
 .bg-green-50 {
-  background: rgba(22, 163, 74, 0.1) !important;
+  background: var(--craftr-green-soft) !important;
 }
 
 .pill.warn,
 .bg-amber-50,
 .bg-yellow-50 {
-  background: rgba(236, 254, 255, 0.78) !important;
-  color: #0f766e !important;
+  background: var(--craftr-amber-soft) !important;
+  color: #b45309 !important;
 }
 
 .bg-indigo-50,
@@ -398,82 +496,97 @@ label {
 .bg-violet-50,
 .bg-purple-50,
 .bg-pink-50 {
-  background: linear-gradient(135deg, rgba(236, 254, 255, 0.78), rgba(245, 243, 255, 0.88)) !important;
-  border-color: rgba(124, 58, 237, 0.16) !important;
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.82), rgba(245, 243, 255, 0.92)) !important;
+  border-color: rgba(124, 58, 237, 0.18) !important;
 }
 
+/* ─── Upload zones ──────────────────────────────────────────────────── */
 .upload,
 .craftr-upload-zone,
 .scene-upload-zone,
 .mockup-upload {
-  border-color: rgba(0, 196, 204, 0.36) !important;
-  background: linear-gradient(135deg, rgba(236, 254, 255, 0.82), rgba(245, 243, 255, 0.9)) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.9), rgba(245, 243, 255, 0.94)) !important;
+  transition: border-color var(--craftr-transition), background var(--craftr-transition), box-shadow var(--craftr-transition), transform var(--craftr-transition);
 }
 
 .upload:hover,
-.upload.drag {
-  border-color: rgba(124, 58, 237, 0.34) !important;
-  background: linear-gradient(135deg, rgba(236, 254, 255, 0.95), rgba(245, 243, 255, 0.98)) !important;
+.upload.drag,
+.craftr-upload-zone:hover,
+.scene-upload-zone:hover {
+  border-color: rgba(124, 58, 237, 0.4) !important;
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.98), rgba(245, 243, 255, 1)) !important;
+  box-shadow: var(--craftr-shadow-sm) !important;
+  transform: translateY(-1px);
 }
 
+/* ─── Canvas / checkerboard preview ─────────────────────────────────── */
 .canvas,
 .compare-wrap {
   background:
-    linear-gradient(45deg, rgba(148, 163, 184, 0.1) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(148, 163, 184, 0.1) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.1) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.1) 75%),
+    linear-gradient(45deg, rgba(148, 163, 184, 0.09) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(148, 163, 184, 0.09) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.09) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.09) 75%),
     #ffffff !important;
-  background-size: 28px 28px !important;
-  background-position: 0 0, 0 14px, 14px -14px, -14px 0 !important;
+  background-size: 24px 24px !important;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0 !important;
 }
 
 .canvas.is-loading::before,
 .mockup-loading {
-  background: rgba(255, 255, 255, 0.74) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
   color: var(--craftr-text) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .canvas.is-loading::after {
-  border-color: rgba(124, 58, 237, 0.2) !important;
+  border-color: rgba(124, 58, 237, 0.22) !important;
   background: var(--craftr-panel) !important;
   color: var(--craftr-text) !important;
-  box-shadow: var(--craftr-shadow) !important;
+  box-shadow: var(--craftr-shadow-md) !important;
 }
 
 .loading-spinner {
-  border-color: rgba(0, 196, 204, 0.22) !important;
+  border-color: rgba(6, 182, 212, 0.22) !important;
   border-top-color: var(--craftr-accent) !important;
 }
 
+/* ─── Toasts ────────────────────────────────────────────────────────── */
 .toast,
 .mockup-toast {
   background: rgba(255, 255, 255, 0.96) !important;
   color: var(--craftr-text) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--craftr-shadow-md) !important;
 }
 
+/* ─── Color swatches ────────────────────────────────────────────────── */
 .swatch,
 .detect-swatch {
-  border-color: rgba(16, 24, 40, 0.14) !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32), var(--craftr-shadow-soft) !important;
+  border-color: rgba(11, 18, 32, 0.14) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4), var(--craftr-shadow-xs) !important;
 }
 
 .swatch {
   position: relative !important;
   overflow: hidden !important;
-  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease !important;
+  transition: transform var(--craftr-transition), border-color var(--craftr-transition), box-shadow var(--craftr-transition) !important;
 }
 
 .swatch:hover {
-  transform: translateY(-1px) scale(1.03);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: var(--craftr-shadow-sm) !important;
 }
 
 .swatch.active,
 .history-item.active {
   border-color: var(--craftr-accent-2) !important;
   box-shadow:
-    0 0 0 3px rgba(0, 196, 204, 0.18),
-    0 12px 26px rgba(16, 24, 40, 0.14) !important;
+    0 0 0 3px rgba(6, 182, 212, 0.2),
+    var(--craftr-shadow-md) !important;
 }
 
 .swatch.active::after {
@@ -484,39 +597,40 @@ label {
   place-items: center;
   color: #ffffff;
   background:
-    radial-gradient(circle, rgba(16, 24, 40, 0.52) 0 32%, transparent 34%),
-    linear-gradient(180deg, transparent, rgba(16, 24, 40, 0.14));
+    radial-gradient(circle, rgba(11, 18, 32, 0.56) 0 32%, transparent 34%),
+    linear-gradient(180deg, transparent, rgba(11, 18, 32, 0.16));
   font-size: 13px;
   font-weight: 950;
-  text-shadow: 0 1px 4px rgba(16, 24, 40, 0.55);
+  text-shadow: 0 1px 4px rgba(11, 18, 32, 0.6);
 }
 
+/* ─── Detected color items ──────────────────────────────────────────── */
 .detect-item:has(input:checked) {
-  border-color: rgba(0, 196, 204, 0.38) !important;
-  background:
-    linear-gradient(135deg, rgba(236, 254, 255, 0.84), rgba(245, 243, 255, 0.9)) !important;
-  box-shadow: 0 0 0 3px rgba(0, 196, 204, 0.12) !important;
+  border-color: rgba(6, 182, 212, 0.42) !important;
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.88), rgba(245, 243, 255, 0.94)) !important;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.14) !important;
 }
 
 .detect-item:has(input:checked) .detect-swatch {
   border-color: #ffffff !important;
   box-shadow:
-    0 0 0 3px rgba(0, 196, 204, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.36) !important;
+    0 0 0 3px rgba(6, 182, 212, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
 }
 
+/* ─── Tailwind ring overrides ───────────────────────────────────────── */
 .ring-indigo-500\/30,
 .ring-purple-500\/30,
 .ring-blue-500\/30,
 .focus\:ring-indigo-500:focus {
-  --tw-ring-color: rgba(0, 196, 204, 0.24) !important;
+  --tw-ring-color: rgba(6, 182, 212, 0.26) !important;
 }
 
 .shadow-indigo-500\/20,
 .shadow-indigo-500\/30,
 .shadow-indigo-500\/40,
 .shadow-purple-500\/30 {
-  --tw-shadow-color: rgba(0, 196, 204, 0.2) !important;
+  --tw-shadow-color: rgba(6, 182, 212, 0.22) !important;
 }
 
 .border-t-transparent {
@@ -529,20 +643,21 @@ label {
 .border-purple-500,
 .border-blue-500,
 .border-pink-500 {
-  border-color: rgba(124, 58, 237, 0.36) !important;
+  border-color: rgba(124, 58, 237, 0.38) !important;
 }
 
-.toast,
+/* ─── Errors ────────────────────────────────────────────────────────── */
+.toast.error,
 .error,
 .alert,
 .bg-red-50 {
-  border-color: rgba(220, 38, 38, 0.18) !important;
-  background: #fff1f2 !important;
-  color: var(--craftr-red) !important;
+  border-color: rgba(239, 68, 68, 0.22) !important;
+  background: var(--craftr-red-soft) !important;
+  color: #b91c1c !important;
 }
 
+/* ─── Misc tool sections ────────────────────────────────────────────── */
 .preview,
-.canvas,
 .stage,
 .workspace,
 .mockup,
@@ -565,6 +680,7 @@ label {
   color: var(--craftr-muted) !important;
 }
 
+/* ─── Mobile polish ─────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .craftr-control-sheet,
   .stack,
@@ -579,5 +695,7 @@ label {
     background: rgba(255, 255, 255, 0.96) !important;
     color: var(--craftr-text) !important;
     border-color: var(--craftr-line) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 }
