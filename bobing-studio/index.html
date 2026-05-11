@@ -1,0 +1,1902 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bobing Studio V2 - Catalog & Recolor</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+        :root {
+            --bg: #101112;
+            --panel: #181a1d;
+            --panel-2: #202328;
+            --panel-3: #292d33;
+            --line: #363b43;
+            --muted-line: #2b2f35;
+            --text: #f7f4ef;
+            --muted: #beb7ad;
+            --soft: #8f887f;
+            --gold: #c8a866;
+            --gold-2: #e3c47c;
+            --green: #47c083;
+            --red: #e56b6f;
+            --shadow: rgba(0, 0, 0, 0.38);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            letter-spacing: 0;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .shell {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: minmax(292px, 340px) minmax(0, 1fr);
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: var(--panel);
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            padding: 13px 16px 11px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.08rem;
+            line-height: 1.15;
+        }
+
+        .brand p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 0.7rem;
+            line-height: 1.35;
+        }
+
+        .controls {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
+
+        .group {
+            background: var(--panel-2);
+            border: 1px solid var(--muted-line);
+            border-radius: var(--radius);
+            padding: 10px;
+        }
+
+        .group-title {
+            margin: 0 0 7px;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .hint {
+            margin: -2px 0 7px;
+            color: var(--muted);
+            font-size: 0.68rem;
+            line-height: 1.32;
+        }
+
+        .upload {
+            min-height: 94px;
+            border: 1px dashed #5a554b;
+            border-radius: var(--radius);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            background: #151719;
+            padding: 10px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .upload:hover,
+        .upload.drag {
+            border-color: var(--gold);
+            background: #1b1d20;
+        }
+
+        .upload.locked {
+            opacity: 0.62;
+            pointer-events: none;
+        }
+
+        .upload img {
+            max-width: 100%;
+            max-height: 96px;
+            border-radius: 6px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .upload strong {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .upload span {
+            color: var(--muted);
+            font-size: 0.68rem;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+        }
+
+        .tab,
+        .btn,
+        .icon-btn {
+            min-height: 36px;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            background: var(--panel-3);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.82rem;
+            transition: transform 0.16s, border-color 0.16s, background 0.16s;
+        }
+
+        .icon-btn {
+            min-height: 36px;
+        }
+
+        .tab:hover,
+        .btn:hover,
+        .icon-btn:hover {
+            border-color: var(--gold);
+        }
+
+        .tab.active,
+        .btn.primary {
+            background: linear-gradient(135deg, var(--gold-2), var(--gold));
+            border-color: var(--gold);
+            color: #15120c;
+        }
+
+        .btn:disabled,
+        .tab:disabled {
+            opacity: 0.48;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.is-loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn.is-loading::after {
+            content: "";
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            margin-left: 8px;
+            animation: spin 0.72s linear infinite;
+        }
+
+        .field {
+            display: grid;
+            gap: 5px;
+            margin-top: 7px;
+        }
+
+        .field.is-muted {
+            opacity: 0.48;
+        }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .field:first-child {
+            margin-top: 0;
+        }
+
+        label {
+            color: var(--muted);
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        select,
+        input[type="text"],
+        input[type="color"],
+        textarea {
+            width: 100%;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            color: var(--text);
+            background: #121416;
+            padding: 7px 8px;
+            outline: none;
+            font-size: 0.8rem;
+        }
+
+        input[type="color"] {
+            height: 38px;
+            padding: 5px;
+        }
+
+        textarea {
+            min-height: 46px;
+            resize: vertical;
+            line-height: 1.45;
+        }
+
+        .swatches {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .favorite-colors {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .swatch {
+            aspect-ratio: 1;
+            border-radius: 7px;
+            border: 2px solid rgba(255, 255, 255, 0.16);
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
+            cursor: pointer;
+        }
+
+        .swatch:disabled,
+        .history-item:disabled {
+            opacity: 0.46;
+            cursor: not-allowed;
+        }
+
+        .swatch.active {
+            border-color: var(--gold-2);
+            box-shadow: 0 0 0 2px rgba(200, 168, 102, 0.18);
+        }
+
+        .prompt-preview {
+            min-height: 78px;
+            max-height: 128px;
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+        .prompt-card {
+            padding: 9px 10px;
+        }
+
+        .prompt-card .group-title {
+            margin-bottom: 6px;
+        }
+
+        .detect-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .detect-item {
+            display: grid;
+            grid-template-columns: 18px 28px minmax(0, 1fr);
+            gap: 9px;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #151719;
+            padding: 9px;
+        }
+
+        .detect-item input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--gold);
+        }
+
+        .detect-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.24);
+        }
+
+        .detect-copy {
+            min-width: 0;
+        }
+
+        .detect-copy strong,
+        .detect-copy span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .detect-copy strong {
+            font-size: 0.78rem;
+        }
+
+        .detect-copy span {
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 0.72rem;
+        }
+
+        .action-stack {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+        }
+
+        .action-stack .primary,
+        .action-stack #generateCatalogSetBtn,
+        .action-stack #generateQuickBtn {
+            grid-column: 1 / -1;
+        }
+
+        .main {
+            min-width: 0;
+            padding: 18px;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            gap: 12px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: center;
+            min-height: 40px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            border-radius: 999px;
+            padding: 8px 12px;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 99px;
+            background: var(--green);
+        }
+
+        .dot.busy {
+            background: var(--gold-2);
+        }
+
+        .dot.error {
+            background: var(--red);
+        }
+
+        .stage {
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+            gap: 16px;
+        }
+
+        .viewer {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            min-height: 390px;
+            padding: 12px;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 10px;
+            box-shadow: 0 18px 42px var(--shadow);
+        }
+
+        .viewer-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .canvas {
+            min-height: 0;
+            border-radius: 6px;
+            background:
+                linear-gradient(45deg, #1b1d20 25%, transparent 25%),
+                linear-gradient(-45deg, #1b1d20 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #1b1d20 75%),
+                linear-gradient(-45deg, transparent 75%, #1b1d20 75%);
+            background-size: 28px 28px;
+            background-position: 0 0, 0 14px, 14px -14px, -14px 0;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .canvas.is-loading::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(16, 17, 18, 0.74);
+            backdrop-filter: blur(2px);
+            z-index: 2;
+        }
+
+        .canvas.is-loading::after {
+            content: attr(data-loading);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            min-width: min(280px, calc(100% - 36px));
+            border: 1px solid rgba(200, 168, 102, 0.36);
+            border-radius: var(--radius);
+            background: #151719;
+            color: var(--text);
+            padding: 44px 16px 16px;
+            text-align: center;
+            font-size: 0.88rem;
+            font-weight: 800;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.34);
+        }
+
+        .loading-spinner {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+            margin: -38px 0 0 -11px;
+            border-radius: 50%;
+            border: 3px solid rgba(227, 196, 124, 0.28);
+            border-top-color: var(--gold-2);
+            animation: spin 0.78s linear infinite;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .canvas img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--soft);
+            padding: 28px;
+            font-size: 0.9rem;
+            max-width: 360px;
+            line-height: 1.55;
+        }
+
+        .history {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 3px;
+        }
+
+        .history-item {
+            flex: 0 0 92px;
+            height: 92px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 4px;
+        }
+
+        .history-item.active {
+            border-color: var(--gold);
+        }
+
+        .history-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .compare-panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .compare-wrap {
+            position: relative;
+            min-height: 260px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #121416;
+            display: grid;
+            place-items: center;
+        }
+
+        .compare-wrap img {
+            max-width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            grid-area: 1 / 1;
+        }
+
+        .compare-after {
+            clip-path: inset(0 50% 0 0);
+        }
+
+        .compare-range {
+            width: 100%;
+            accent-color: var(--gold);
+        }
+
+        .mini-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            min-width: 42px;
+            width: 36px;
+            padding: 0;
+            display: grid;
+            place-items: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .toast {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            max-width: 420px;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            background: #151719;
+            color: var(--text);
+            padding: 12px 14px;
+            box-shadow: 0 14px 36px var(--shadow);
+            font-size: 0.86rem;
+            line-height: 1.45;
+            z-index: 30;
+        }
+
+        @media (max-width: 980px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                min-height: auto;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .stage {
+                grid-template-columns: 1fr;
+            }
+
+            .viewer {
+                min-height: 360px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .main {
+                padding: 14px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .field-grid,
+            .action-stack {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 860px) {
+            html,
+            body {
+                height: 100%;
+                overflow: hidden;
+                background: #eef2f7;
+            }
+
+            .shell {
+                height: 100dvh;
+                min-height: 0;
+                display: flex;
+                flex-direction: column-reverse;
+                background: #eef2f7;
+            }
+
+            .sidebar {
+                flex: 0 0 48dvh;
+                min-height: 0;
+                overflow: hidden;
+                border: 0;
+                border-radius: 26px 26px 0 0;
+                box-shadow: 0 -18px 42px rgba(0, 0, 0, 0.22);
+            }
+
+            .brand {
+                padding: 14px 16px 10px;
+                background: rgba(24, 26, 29, 0.96);
+                backdrop-filter: blur(18px);
+            }
+
+            .brand h1 {
+                font-size: 1rem;
+            }
+
+            .brand p {
+                display: none;
+            }
+
+            .controls {
+                min-height: 0;
+                overflow-y: auto;
+                padding: 12px;
+                padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .group {
+                border-radius: 18px;
+                padding: 12px;
+            }
+
+            .main {
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow-y: auto;
+                padding: 12px;
+                background: #eef2f7;
+                color: #111827;
+            }
+
+            .topbar {
+                position: sticky;
+                top: 0;
+                z-index: 20;
+                flex-direction: row;
+                align-items: center;
+                border-radius: 20px;
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.94);
+                color: #111827;
+                box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+                backdrop-filter: blur(18px);
+            }
+
+            .topbar .muted,
+            .topbar p {
+                color: #64748b;
+            }
+
+            .stage {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .viewer,
+            .canvas {
+                min-height: 260px;
+                border-radius: 20px;
+            }
+
+            button,
+            input,
+            select,
+            textarea {
+                font-size: 16px;
+            }
+
+            .btn,
+            .tab,
+            .icon-btn {
+                min-height: 44px;
+                border-radius: 14px;
+            }
+
+            .toast {
+                left: 12px;
+                right: 12px;
+                bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+                max-width: none;
+                border-radius: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>Bobing Studio V2</h1>
+                <p>Foto katalog marketplace dan recolor varian produk fashion muslim.</p>
+            </div>
+
+            <div class="controls">
+                <input id="fileInput" class="hidden" type="file" accept="image/png,image/jpeg" />
+
+                <div class="group">
+                    <div id="uploadZone" class="upload" role="button" tabindex="0">
+                        <div id="uploadContent">
+                            <strong>Upload foto produk</strong>
+                            <span>JPG/PNG maksimal 5MB. Pakai foto produk paling jelas sebagai base.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button id="tabCatalog" class="tab active" type="button">Catalog</button>
+                    <button id="tabRecolor" class="tab" type="button">Recolor</button>
+                </div>
+
+                <section id="catalogPanel" class="group">
+                    <h2 class="group-title">Catalog Setup</h2>
+
+                    <div class="field">
+                        <label for="productName">Nama produk</label>
+                        <input id="productName" type="text" placeholder="contoh: koko-halim-sage" />
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="catalogStyle">Preset</label>
+                            <select id="catalogStyle">
+                                <option value="white">White Studio</option>
+                                <option value="gray">Clean Gray</option>
+                                <option value="detail">Detail Shot</option>
+                                <option value="flatlay">Flat Lay</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="subjectType">Subject</label>
+                            <select id="subjectType">
+                                <option value="ai_model">AI model</option>
+                                <option value="mannequin">Mannequin</option>
+                                <option value="original">Original</option>
+                                <option value="product_only">Product only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field" id="modelPoseField">
+                        <label for="modelPose">Pose model</label>
+                        <select id="modelPose">
+                            <option value="market_front">Front trust</option>
+                            <option value="three_quarter">Three-quarter fit</option>
+                            <option value="soft_hand">Sleeve/detail hand</option>
+                            <option value="walking">Gentle walking</option>
+                            <option value="hands_relaxed">Clean relaxed</option>
+                            <option value="side_back">Side/back 360</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="productHint">Catatan</label>
+                        <textarea id="productHint" placeholder="Contoh: koko pria, tunik muslimah, hijab motif, detail penting."></textarea>
+                    </div>
+                </section>
+
+                <section id="recolorPanel" class="group hidden">
+                    <h2 class="group-title">Recolor Variant</h2>
+                    <p class="hint">Ubah warna produk untuk varian marketplace, sambil menjaga motif, jahitan, siluet, lighting, dan tekstur.</p>
+
+                    <button id="detectColorsBtn" class="btn" type="button" disabled>Smart Detect Colors</button>
+                    <div id="detectedColors" class="detect-list"></div>
+
+                    <div class="field">
+                        <label for="targetColor">Warna tujuan</label>
+                        <input id="targetColor" type="color" value="#7d8b6f" />
+                    </div>
+
+                    <div id="swatches" class="swatches"></div>
+                    <button id="saveColorBtn" class="btn" type="button">Save Favorite Color</button>
+                    <div id="favoriteColors" class="favorite-colors"></div>
+
+                    <div class="field">
+                        <label for="colorName">Nama warna</label>
+                        <input id="colorName" type="text" value="sage green" placeholder="sage green, dusty pink, navy, maroon" />
+                    </div>
+
+                    <div class="field">
+                        <label for="recolorRegion">Area yang diubah</label>
+                        <textarea id="recolorRegion" placeholder="Contoh: ubah warna kain utama saja. Jangan ubah bordir, kancing, label, kulit model, atau background.">Change only the main garment fabric color. Preserve embroidery, buttons, labels, skin, mannequin, and background.</textarea>
+                    </div>
+                </section>
+
+                <div class="action-stack">
+                    <button id="generateBtn" class="btn primary" type="button" disabled>Generate Catalog</button>
+                    <button id="generateCatalogSetBtn" class="btn" type="button" disabled>Generate Set</button>
+                    <button id="generateQuickBtn" class="btn" type="button" disabled>Generate 6 Quick Variants</button>
+                    <button id="useResultBtn" class="btn" type="button" disabled>Use as Base</button>
+                    <button id="downloadBtn" class="btn" type="button" disabled>Download</button>
+                    <button id="downloadAllBtn" class="btn" type="button" disabled>Download All</button>
+                </div>
+
+                <section class="group prompt-card">
+                    <h2 class="group-title">Prompt Preview</h2>
+                    <textarea id="promptPreview" class="prompt-preview" readonly></textarea>
+                    <button id="copyPromptBtn" class="btn" type="button">Copy Prompt</button>
+                </section>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div>
+                    <strong>Production Preview</strong>
+                    <div class="hint" style="margin:4px 0 0;">Original di kiri, hasil AI di kanan. Semua output 1:1 PNG.</div>
+                </div>
+                <div id="status" class="status"><span id="statusDot" class="dot"></span><span id="statusText">Ready</span></div>
+            </div>
+
+            <section class="stage">
+                <div class="viewer">
+                    <div class="viewer-head">
+                        <span>Original / Base</span>
+                        <span id="baseMeta">No image</span>
+                    </div>
+                    <div id="baseCanvas" class="canvas">
+                        <div class="empty">Upload foto produk fashion muslim sebagai base image.</div>
+                    </div>
+                </div>
+
+                <div class="viewer">
+                    <div class="viewer-head">
+                        <span id="resultTitle">Generated Result</span>
+                        <div class="mini-actions">
+                            <button id="clearBtn" class="icon-btn" type="button" title="Clear result" disabled>×</button>
+                        </div>
+                    </div>
+                    <div id="resultCanvas" class="canvas">
+                        <div class="empty">Hasil katalog atau recolor akan muncul di sini.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="history" class="history"></section>
+
+            <section id="comparePanel" class="compare-panel hidden">
+                <div class="viewer-head">
+                    <span>Before / After Compare</span>
+                    <span id="compareValue">50%</span>
+                </div>
+                <div class="compare-wrap">
+                    <img id="compareBefore" alt="Before">
+                    <img id="compareAfter" class="compare-after" alt="After">
+                </div>
+                <input id="compareRange" class="compare-range" type="range" min="0" max="100" value="50">
+            </section>
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script>
+        const API_MODEL = "gemini-2.5-flash-image-preview";
+        const OPTIMIZER_MODEL = "gemini-2.5-flash-preview-05-20";
+        const API_KEY = "";
+        const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+
+        const state = {
+            mode: "catalog",
+            baseImage: null,
+            baseMime: null,
+            generatedImage: null,
+            detectedColors: [],
+            favoriteColors: [],
+            comparePosition: 50,
+            history: [],
+            busy: false,
+            busyMessage: "",
+        };
+
+        const els = {
+            fileInput: document.getElementById("fileInput"),
+            uploadZone: document.getElementById("uploadZone"),
+            uploadContent: document.getElementById("uploadContent"),
+            tabCatalog: document.getElementById("tabCatalog"),
+            tabRecolor: document.getElementById("tabRecolor"),
+            catalogPanel: document.getElementById("catalogPanel"),
+            recolorPanel: document.getElementById("recolorPanel"),
+            productName: document.getElementById("productName"),
+            catalogStyle: document.getElementById("catalogStyle"),
+            subjectType: document.getElementById("subjectType"),
+            modelPoseField: document.getElementById("modelPoseField"),
+            modelPose: document.getElementById("modelPose"),
+            productHint: document.getElementById("productHint"),
+            targetColor: document.getElementById("targetColor"),
+            colorName: document.getElementById("colorName"),
+            recolorRegion: document.getElementById("recolorRegion"),
+            swatches: document.getElementById("swatches"),
+            saveColorBtn: document.getElementById("saveColorBtn"),
+            favoriteColors: document.getElementById("favoriteColors"),
+            detectColorsBtn: document.getElementById("detectColorsBtn"),
+            detectedColors: document.getElementById("detectedColors"),
+            generateBtn: document.getElementById("generateBtn"),
+            generateCatalogSetBtn: document.getElementById("generateCatalogSetBtn"),
+            generateQuickBtn: document.getElementById("generateQuickBtn"),
+            useResultBtn: document.getElementById("useResultBtn"),
+            downloadBtn: document.getElementById("downloadBtn"),
+            downloadAllBtn: document.getElementById("downloadAllBtn"),
+            clearBtn: document.getElementById("clearBtn"),
+            baseCanvas: document.getElementById("baseCanvas"),
+            resultCanvas: document.getElementById("resultCanvas"),
+            resultTitle: document.getElementById("resultTitle"),
+            baseMeta: document.getElementById("baseMeta"),
+            statusDot: document.getElementById("statusDot"),
+            statusText: document.getElementById("statusText"),
+            history: document.getElementById("history"),
+            promptPreview: document.getElementById("promptPreview"),
+            copyPromptBtn: document.getElementById("copyPromptBtn"),
+            comparePanel: document.getElementById("comparePanel"),
+            compareBefore: document.getElementById("compareBefore"),
+            compareAfter: document.getElementById("compareAfter"),
+            compareRange: document.getElementById("compareRange"),
+            compareValue: document.getElementById("compareValue"),
+            toast: document.getElementById("toast"),
+        };
+
+        const quickColors = [
+            ["Sage", "#7d8b6f"],
+            ["Army", "#4f5a3a"],
+            ["Khaki", "#b7a57a"],
+            ["Putih", "#f7f4ec"],
+            ["Abu", "#8a8d8f"],
+            ["Biru Muda", "#9fc7df"],
+            ["Beige", "#d8c4a3"],
+            ["Dusty Pink", "#c98f98"],
+            ["Navy", "#1e2f4f"],
+            ["Maroon", "#7b2530"],
+            ["Mocca", "#8a6a55"],
+            ["Black", "#111111"],
+            ["Ivory", "#eee7d8"],
+            ["Olive", "#606847"],
+            ["Lilac", "#a89bc7"],
+            ["Taupe", "#9b8b7b"],
+            ["Sky", "#8db5d5"],
+            ["Emerald", "#236b57"],
+        ];
+
+        function escapeHtml(value = "") {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+            })[char]);
+        }
+
+        function normalizeHex(value, fallback = "#777777") {
+            const cleaned = String(value || "").trim();
+            if (/^#[0-9a-f]{6}$/i.test(cleaned)) return cleaned;
+            if (/^[0-9a-f]{6}$/i.test(cleaned)) return `#${cleaned}`;
+            return fallback;
+        }
+
+        function slugify(value, fallback = "image") {
+            const slug = String(value || "")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+            return slug || fallback;
+        }
+
+        function productSlug() {
+            return slugify(els.productName.value, "bobing-product");
+        }
+
+        function storageKey() {
+            return "bobingStudioFavoriteColors";
+        }
+
+        function loadFavoriteColors() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(storageKey()) || "[]");
+                state.favoriteColors = Array.isArray(saved) ? saved.slice(0, 18) : [];
+            } catch (error) {
+                state.favoriteColors = [];
+            }
+        }
+
+        function saveFavoriteColors() {
+            localStorage.setItem(storageKey(), JSON.stringify(state.favoriteColors.slice(0, 18)));
+        }
+
+        function setStatus(text, type = "ready") {
+            els.statusText.textContent = text;
+            els.statusDot.className = `dot ${type === "busy" ? "busy" : type === "error" ? "error" : ""}`;
+            if (type === "busy") state.busyMessage = text;
+            if (type !== "busy") state.busyMessage = "";
+            updateBusyUi();
+        }
+
+        function showToast(message) {
+            els.toast.textContent = message;
+            els.toast.classList.remove("hidden");
+            window.clearTimeout(showToast.timer);
+            showToast.timer = window.setTimeout(() => els.toast.classList.add("hidden"), 3600);
+        }
+
+        function setMode(mode) {
+            if (state.busy) {
+                showToast("Tunggu proses selesai dulu.");
+                return;
+            }
+            state.mode = mode;
+            els.tabCatalog.classList.toggle("active", mode === "catalog");
+            els.tabRecolor.classList.toggle("active", mode === "recolor");
+            els.catalogPanel.classList.toggle("hidden", mode !== "catalog");
+            els.recolorPanel.classList.toggle("hidden", mode !== "recolor");
+            els.generateBtn.textContent = mode === "catalog" ? "Generate Catalog" : "Generate Recolor";
+            els.generateCatalogSetBtn.classList.toggle("hidden", mode !== "catalog");
+            els.generateQuickBtn.classList.toggle("hidden", mode !== "recolor");
+            els.resultTitle.textContent = mode === "catalog" ? "Catalog Result" : "Recolor Result";
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const primaryBusyLabel = state.mode === "catalog" ? "Generating Catalog" : "Generating Recolor";
+            const poseRelevant = ["ai_model", "original"].includes(els.subjectType.value) && !["flatlay", "detail"].includes(els.catalogStyle.value);
+            els.modelPoseField.classList.toggle("is-muted", !poseRelevant);
+            els.modelPose.disabled = state.busy || !poseRelevant;
+            els.generateBtn.disabled = !state.baseImage || state.busy;
+            els.generateBtn.classList.toggle("is-loading", state.busy && /Generating catalog|Generating recolor/i.test(state.busyMessage));
+            els.generateBtn.textContent = state.busy && /Generating catalog|Generating recolor/i.test(state.busyMessage)
+                ? primaryBusyLabel
+                : state.mode === "catalog" ? "Generate Catalog" : "Generate Recolor";
+            els.detectColorsBtn.disabled = !state.baseImage || state.busy;
+            els.detectColorsBtn.classList.toggle("is-loading", state.busy && /Detecting/i.test(state.busyMessage));
+            els.generateCatalogSetBtn.disabled = !state.baseImage || state.busy || state.mode !== "catalog";
+            els.generateCatalogSetBtn.classList.toggle("is-loading", state.busy && /Catalog set/i.test(state.busyMessage));
+            els.generateQuickBtn.disabled = !state.baseImage || state.busy || state.mode !== "recolor";
+            els.generateQuickBtn.classList.toggle("is-loading", state.busy && /Generating variant/i.test(state.busyMessage));
+            els.useResultBtn.disabled = !state.generatedImage || state.busy;
+            els.downloadBtn.disabled = !state.generatedImage || state.busy;
+            els.downloadAllBtn.disabled = state.history.length === 0 || state.busy;
+            els.clearBtn.disabled = !state.generatedImage || state.busy;
+            els.copyPromptBtn.disabled = state.busy;
+            els.saveColorBtn.disabled = state.busy;
+            updatePromptPreview();
+            updateBusyUi();
+        }
+
+        function updateBusyUi() {
+            const busyText = state.busyMessage || "Processing image";
+            document.body.classList.toggle("app-busy", state.busy);
+            els.uploadZone.classList.toggle("locked", state.busy);
+            els.uploadZone.setAttribute("aria-disabled", state.busy ? "true" : "false");
+            els.fileInput.disabled = state.busy;
+            els.tabCatalog.disabled = state.busy;
+            els.tabRecolor.disabled = state.busy;
+
+            document.querySelectorAll(".controls select, .controls textarea, .controls input[type='text'], .controls input[type='color']").forEach((control) => {
+                control.disabled = state.busy;
+            });
+            document.querySelectorAll(".detect-item input").forEach((control) => {
+                control.disabled = state.busy;
+            });
+            document.querySelectorAll(".swatch, .history-item").forEach((control) => {
+                control.disabled = state.busy;
+            });
+
+            els.resultCanvas.classList.toggle("is-loading", state.busy && !/Preprocessing|Detecting/i.test(busyText));
+            els.baseCanvas.classList.toggle("is-loading", state.busy && /Preprocessing|Detecting/i.test(busyText));
+            els.resultCanvas.dataset.loading = busyText;
+            els.baseCanvas.dataset.loading = busyText;
+
+            [els.baseCanvas, els.resultCanvas].forEach((canvas) => {
+                const shouldShowSpinner = canvas.classList.contains("is-loading");
+                const existing = canvas.querySelector(".loading-spinner");
+                if (shouldShowSpinner && !existing) {
+                    const spinner = document.createElement("span");
+                    spinner.className = "loading-spinner";
+                    spinner.setAttribute("aria-hidden", "true");
+                    canvas.appendChild(spinner);
+                } else if (!shouldShowSpinner && existing) {
+                    existing.remove();
+                }
+            });
+        }
+
+        function renderImage(target, src, emptyText) {
+            if (!src) {
+                target.innerHTML = `<div class="empty">${emptyText}</div>`;
+                return;
+            }
+            target.innerHTML = `<img src="${src}" alt="">`;
+        }
+
+        function renderAll() {
+            renderImage(els.baseCanvas, state.baseImage, "Upload foto produk fashion muslim sebagai base image.");
+            renderImage(els.resultCanvas, state.generatedImage, "Hasil katalog atau recolor akan muncul di sini.");
+            els.uploadContent.innerHTML = state.baseImage
+                ? `<img src="${state.baseImage}" alt="Uploaded base">`
+                : `<strong>Upload foto produk</strong><span>JPG/PNG maksimal 5MB. Pakai foto produk paling jelas sebagai base.</span>`;
+            els.baseMeta.textContent = state.baseImage ? state.baseMime.toUpperCase().replace("IMAGE/", "") : "No image";
+            renderHistory();
+            renderDetectedColors();
+            renderFavoriteColors();
+            renderCompare();
+            updateButtons();
+        }
+
+        function renderSwatches() {
+            els.swatches.innerHTML = quickColors.map(([name, hex]) => (
+                `<button class="swatch ${hex === els.targetColor.value ? "active" : ""}" type="button" title="${name}" aria-label="${name}" data-name="${name}" data-hex="${hex}" style="background:${hex}"></button>`
+            )).join("");
+        }
+
+        function renderFavoriteColors() {
+            if (!state.favoriteColors.length) {
+                els.favoriteColors.innerHTML = "";
+                return;
+            }
+
+            els.favoriteColors.innerHTML = state.favoriteColors.map(([name, hex]) => (
+                `<button class="swatch ${hex === els.targetColor.value ? "active" : ""}" type="button" title="${escapeHtml(name)}" aria-label="${escapeHtml(name)}" data-name="${escapeHtml(name)}" data-hex="${hex}" style="background:${hex}"></button>`
+            )).join("");
+        }
+
+        function renderHistory() {
+            els.history.innerHTML = state.history.map((item, index) => (
+                `<button class="history-item ${item.image === state.generatedImage ? "active" : ""}" type="button" data-index="${index}" title="${item.label}">
+                    <img src="${item.image}" alt="${item.label}">
+                </button>`
+            )).join("");
+        }
+
+        function renderDetectedColors() {
+            if (!state.detectedColors.length) {
+                els.detectedColors.innerHTML = `<div class="hint" style="margin:0;">Belum ada hasil deteksi. Klik Smart Detect Colors untuk produk kombinasi 2 warna atau lebih.</div>`;
+                return;
+            }
+
+            els.detectedColors.innerHTML = state.detectedColors.map((item, index) => {
+                const hex = normalizeHex(item.originalHex || item.hex || "#777777");
+                const checked = item.selected === false ? "" : "checked";
+                const title = escapeHtml(item.originalColor || item.colorName || `Color ${index + 1}`);
+                const desc = escapeHtml(item.partDescription || item.area || "garment color region");
+                return `
+                    <label class="detect-item">
+                        <input type="checkbox" data-detect-index="${index}" ${checked}>
+                        <span class="detect-swatch" style="background:${hex}"></span>
+                        <span class="detect-copy">
+                            <strong>${title} ${hex}</strong>
+                            <span>${desc}</span>
+                        </span>
+                    </label>
+                `;
+            }).join("");
+        }
+
+        function renderCompare() {
+            const canCompare = !!state.baseImage && !!state.generatedImage;
+            els.comparePanel.classList.toggle("hidden", !canCompare);
+            if (!canCompare) return;
+            els.compareBefore.src = state.baseImage;
+            els.compareAfter.src = state.generatedImage;
+            els.compareRange.value = String(state.comparePosition);
+            els.compareValue.textContent = `${state.comparePosition}%`;
+            els.compareAfter.style.clipPath = `inset(0 ${100 - state.comparePosition}% 0 0)`;
+        }
+
+        function readFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => resolve(event.target.result);
+                reader.onerror = () => reject(new Error("File tidak bisa dibaca."));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function downscale(dataUrl, maxSize = 1536, mime = "image/jpeg", quality = 0.92) {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.onload = () => {
+                    const ratio = Math.min(1, maxSize / Math.max(image.width, image.height));
+                    const canvas = document.createElement("canvas");
+                    canvas.width = Math.round(image.width * ratio);
+                    canvas.height = Math.round(image.height * ratio);
+                    const ctx = canvas.getContext("2d", { alpha: false });
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL(mime, quality));
+                };
+                image.onerror = () => reject(new Error("Gambar tidak valid."));
+                image.src = dataUrl;
+            });
+        }
+
+        async function loadFile(file) {
+            if (state.busy) {
+                showToast("Tunggu proses selesai dulu.");
+                return;
+            }
+            if (!file || !["image/jpeg", "image/png"].includes(file.type)) {
+                showToast("Gunakan file JPG atau PNG.");
+                return;
+            }
+            if (file.size > MAX_UPLOAD_BYTES) {
+                showToast("File terlalu besar. Maksimal 5MB.");
+                return;
+            }
+            setStatus("Preprocessing image", "busy");
+            try {
+                const raw = await readFile(file);
+                const dataUrl = await downscale(raw);
+                state.baseImage = dataUrl;
+                state.baseMime = "image/jpeg";
+                state.generatedImage = null;
+                state.detectedColors = [];
+                setStatus("Ready");
+                renderAll();
+            } catch (error) {
+                setStatus("Preprocess failed", "error");
+                showToast(error.message || "Gagal membaca gambar.");
+            }
+        }
+
+        function catalogScene(overrides = {}) {
+            const style = overrides.style || els.catalogStyle.value;
+            const subjectValue = overrides.subject || els.subjectType.value;
+            const poseValue = overrides.pose || els.modelPose.value;
+            const subject = {
+                ai_model: "a highly photorealistic modest fashion model suitable for Muslim fashion marketplace catalog, neat hijab styling when appropriate and not hiding garment details",
+                mannequin: "a realistic studio mannequin with no face, no hair, no skin, and no distracting features",
+                original: "the same original subject from the uploaded image, preserving identity and body proportions",
+                product_only: "the product only, no human model, no mannequin, arranged professionally",
+            }[subjectValue];
+
+            const scenes = {
+                white: "pure white seamless studio background, front-facing full-body product catalog composition, soft even studio softbox lighting, camera at chest height, small clean margin around the product",
+                gray: "plain neutral light gray studio background, soft diffused lighting, full-body front or slight three-quarter catalog pose, clean premium marketplace look",
+                detail: "close-up detail catalog shot focused on fabric texture, stitching, embroidery, buttons, sleeve, cuff, collar, hem, or unique construction details",
+                flatlay: "top-down flat lay catalog photo on pure white surface, garment arranged symmetrically and neatly, even overhead lighting, no model",
+            };
+
+            const pose = {
+                market_front: "POSE: simple front-facing stance, standing straight, shoulders relaxed, hands naturally down or lightly relaxed, trustworthy marketplace fit view.",
+                three_quarter: "POSE: subtle three-quarter angle, one shoulder slightly angled toward camera, shows front and side silhouette while keeping garment details clear.",
+                soft_hand: "POSE: one hand gently highlights sleeve, cuff, pocket, collar, or fabric fall without covering key product details; other hand relaxed.",
+                walking: "POSE: gentle walking step with natural modest movement, fabric drapes and flows realistically, face/body calm, no exaggerated editorial action.",
+                hands_relaxed: "POSE: clean premium pose with both hands relaxed at sides or lightly joined, elegant posture, calm expression, product remains dominant.",
+                side_back: "POSE: side or slight back angle for 360 catalog view, garment back/side construction visible, posture straight and commercial.",
+            }[poseValue] || "";
+
+            const shouldUsePose = ["ai_model", "original"].includes(subjectValue) && !["flatlay", "detail"].includes(style);
+
+            return [
+                `SUBJECT: ${subject}.`,
+                `SCENE: ${scenes[style]}.`,
+                overrides.shotInstruction ? `SHOT: ${overrides.shotInstruction}` : "",
+                shouldUsePose ? pose : "POSE: product-only, mannequin, flat lay, or detail composition should stay simple and strictly product-focused.",
+            ].filter(Boolean).join("\n");
+        }
+
+        function sharedMarketplaceRules() {
+            return `
+            GOAL: Generate a professional product catalog photo for modest Muslim fashion marketplace listings.
+            PRODUCT ACCURACY IS TOP PRIORITY:
+            - Preserve the uploaded garment exactly: color family, motif, print placement, embroidery, fabric texture, seam lines, panel construction, buttons, cuffs, collar, pocket placement, label, hem length, silhouette, and fit.
+            - Do not redesign the garment. Do not add or remove pockets, buttons, pattern elements, panels, zippers, logos, labels, or trims.
+            - If there is conflict between beauty and product accuracy, choose product accuracy.
+            MARKETPLACE STYLE:
+            - Clean professional studio photo, photorealistic, high resolution, natural realistic fabric drape.
+            - Modest styling, respectful posture, no revealing pose, no exaggerated glamour, no editorial drama.
+            - Pose must help sell the garment: clear fit, visible silhouette, natural fabric fall, and no hands or accessories blocking product details.
+            - Product must be the main focus and fully visible unless this is a detail shot.
+            - No props, text, watermark, price tag, UI, graphic overlay, hanger, bag, jewelry focus, or distracting accessories.
+            - Soft even lighting, true-to-life color, controlled shadows.
+            OUTPUT: 1:1 square PNG, realistic unedited studio catalog photo, ready for Shopee/Tokopedia/marketplace listing.
+            `.trim();
+        }
+
+        function buildCatalogPrompt(overrides = {}) {
+            const note = els.productHint.value.trim();
+            const name = els.productName.value.trim();
+            return [
+                catalogScene(overrides),
+                sharedMarketplaceRules(),
+                name ? `PRODUCT NAME: ${name}` : "",
+                note ? `USER PRODUCT NOTE: ${note}` : "",
+            ].filter(Boolean).join("\n\n");
+        }
+
+        function selectedColorRegions() {
+            return state.detectedColors.filter((item) => item.selected !== false);
+        }
+
+        function selectedRegionText() {
+            const selected = selectedColorRegions();
+            if (!selected.length) return "";
+
+            return selected.map((item, index) => {
+                const color = item.originalColor || item.colorName || `color ${index + 1}`;
+                const hex = normalizeHex(item.originalHex || item.hex || "");
+                const part = item.partDescription || item.area || "garment region";
+                return `${index + 1}. ${color} (${hex}) on ${part}`;
+            }).join("\n");
+        }
+
+        function buildRecolorPrompt() {
+            const hex = els.targetColor.value;
+            const name = els.colorName.value.trim() || hex;
+            const product = els.productName.value.trim();
+            const region = els.recolorRegion.value.trim();
+            const detectedRegions = selectedRegionText();
+            return `
+            TASK: Create a new marketplace color variant from the uploaded fashion product image.
+            ${product ? `PRODUCT NAME: ${product}.` : ""}
+            RECOLOR TARGET:
+            - Change the selected garment fabric area to ${name} (${hex}).
+            - ${region || "Change only the main garment fabric color."}
+            ${detectedRegions ? `SMART DETECTED REGIONS TO RECOLOR:\n${detectedRegions}` : "SMART DETECTED REGIONS TO RECOLOR: none selected; infer the main garment fabric only."}
+            PRESERVE:
+            - Keep the exact garment design, motif layout, embroidery, seams, buttons, trims, label, pockets, fabric texture, folds, shadows, highlights, silhouette, and camera angle.
+            - Preserve model/mannequin identity or product display, background, lighting direction, composition, and realism.
+            - Do not recolor skin, face, hijab unless it is the garment being edited, background, props, labels, buttons, embroidery, or printed motifs unless explicitly requested.
+            - For multi-color products, recolor ONLY the selected detected region(s). Keep all unselected colors unchanged.
+            QUALITY:
+            - The new color must look naturally dyed into the fabric, with realistic texture and lighting.
+            - Result must look like a real unedited product photo for marketplace color variants.
+            OUTPUT: 1:1 square PNG, photorealistic, high-resolution, no text, no watermark, no graphics.
+            `.trim();
+        }
+
+        function currentPrompt() {
+            return state.mode === "catalog" ? buildCatalogPrompt() : buildRecolorPrompt();
+        }
+
+        function updatePromptPreview() {
+            if (!els.promptPreview) return;
+            els.promptPreview.value = currentPrompt();
+        }
+
+        async function copyPrompt() {
+            try {
+                await navigator.clipboard.writeText(currentPrompt());
+                showToast("Prompt copied.");
+            } catch (error) {
+                els.promptPreview.select();
+                document.execCommand("copy");
+                showToast("Prompt copied.");
+            }
+        }
+
+        function saveCurrentColor() {
+            const hex = normalizeHex(els.targetColor.value);
+            const name = els.colorName.value.trim() || hex;
+            state.favoriteColors = [
+                [name, hex],
+                ...state.favoriteColors.filter(([, savedHex]) => savedHex.toLowerCase() !== hex.toLowerCase()),
+            ].slice(0, 18);
+            saveFavoriteColors();
+            renderFavoriteColors();
+            showToast(`${name} saved to favorite colors.`);
+        }
+
+        function applyColorButton(button) {
+            els.targetColor.value = button.dataset.hex;
+            els.colorName.value = button.dataset.name.toLowerCase();
+            renderSwatches();
+            renderFavoriteColors();
+            updatePromptPreview();
+        }
+
+        async function backoffFetch(url, options, retries = 2) {
+            let lastError;
+            for (let i = 0; i <= retries; i += 1) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return response;
+                    const body = await response.text().catch(() => "");
+                    if (response.status === 429 || response.status >= 500) {
+                        await new Promise((resolve) => setTimeout(resolve, 600 + i * 900));
+                        continue;
+                    }
+                    throw new Error(`API ${response.status}: ${body || response.statusText}`);
+                } catch (error) {
+                    lastError = error;
+                    if (i === retries) break;
+                    await new Promise((resolve) => setTimeout(resolve, 500 + i * 800));
+                }
+            }
+            throw lastError || new Error("Network error.");
+        }
+
+        function extractText(json) {
+            return json?.candidates?.[0]?.content?.parts
+                ?.map((part) => part.text || "")
+                .filter(Boolean)
+                .join("\n") || "";
+        }
+
+        function parseJsonArray(text) {
+            const raw = String(text || "").trim();
+            try {
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : parsed.colors || [];
+            } catch (error) {
+                const match = raw.match(/\[[\s\S]*\]/);
+                if (!match) return [];
+                const parsed = JSON.parse(match[0]);
+                return Array.isArray(parsed) ? parsed : [];
+            }
+        }
+
+        async function detectColors() {
+            if (!state.baseImage || state.busy) return;
+
+            state.busy = true;
+            updateButtons();
+            setStatus("Detecting product colors", "busy");
+
+            try {
+                const prompt = `
+                Analyze the uploaded fashion product image for recolor preparation.
+                Identify the dominant editable garment color regions only.
+                Return JSON only, no markdown, as an array of 1 to 6 objects.
+                Each object must have:
+                - originalColor: short color name
+                - originalHex: closest 6-digit HEX color
+                - partDescription: specific garment area, for example "main body panel", "sleeves", "outer layer", "inner panel", "collar trim", "hijab fabric", "skirt panel"
+                - editable: true if this region is garment fabric suitable for recolor
+                Exclude skin, face, hands, background, floor, shadows, jewelry, buttons, labels, price tags, and non-garment props.
+                For products with 2 or more color combinations, separate each color region clearly.
+                `.trim();
+
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [
+                            { text: prompt },
+                            {
+                                inlineData: {
+                                    mimeType: state.baseMime,
+                                    data: state.baseImage.split(",")[1],
+                                },
+                            },
+                        ],
+                    }],
+                    generationConfig: {
+                        candidateCount: 1,
+                        temperature: 0.1,
+                    },
+                };
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent?key=${API_KEY}`;
+                const response = await backoffFetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+                const json = await response.json();
+                const detected = parseJsonArray(extractText(json))
+                    .filter((item) => item && item.editable !== false)
+                    .slice(0, 6)
+                    .map((item, index) => ({
+                        originalColor: item.originalColor || item.color || `Color ${index + 1}`,
+                        originalHex: normalizeHex(item.originalHex || item.hex || "#777777"),
+                        partDescription: item.partDescription || item.area || "garment fabric region",
+                        selected: index === 0,
+                    }));
+
+                if (!detected.length) throw new Error("Tidak ada warna produk yang bisa dideteksi.");
+
+                state.detectedColors = detected;
+                setStatus(`Detected ${detected.length} color region${detected.length > 1 ? "s" : ""}`);
+                renderAll();
+            } catch (error) {
+                setStatus("Detect failed", "error");
+                showToast(error.message || "Smart detect gagal.");
+            } finally {
+                state.busy = false;
+                updateButtons();
+            }
+        }
+
+        async function requestImage(prompt, temperature = 0.16) {
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [
+                        { text: prompt },
+                        {
+                            inlineData: {
+                                mimeType: state.baseMime,
+                                data: state.baseImage.split(",")[1],
+                            },
+                        },
+                    ],
+                }],
+                generationConfig: {
+                    imageGenerationConfig: {
+                        outputMimeType: "image/png",
+                        numberOfImages: 1,
+                        aspectRatio: "1:1",
+                    },
+                    candidateCount: 1,
+                    temperature,
+                },
+            };
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent?key=${API_KEY}`;
+            const response = await backoffFetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            const json = await response.json();
+            const imageData = json?.candidates?.[0]?.content?.parts?.find((part) => part.inlineData)?.inlineData?.data;
+            if (!imageData) throw new Error("API tidak mengembalikan image data.");
+            return `data:image/png;base64,${imageData}`;
+        }
+
+        function addHistory(image, label, mode = state.mode, meta = {}) {
+            state.history.unshift({
+                image,
+                label,
+                mode,
+                product: productSlug(),
+                color: meta.color || "",
+                shot: meta.shot || "",
+                createdAt: Date.now(),
+            });
+            state.history = state.history.slice(0, 30);
+        }
+
+        function historyFilename(item, index = 1) {
+            const product = slugify(item.product || productSlug(), "bobing-product");
+            const mode = slugify(item.mode, "catalog");
+            const color = slugify(item.color || (item.mode === "recolor" ? item.label : ""), "");
+            const shot = slugify(item.shot || (item.mode === "catalog" ? item.label : "catalog"), "catalog");
+            const parts = [product, color, shot || mode].filter(Boolean);
+            return `${String(index).padStart(2, "0")}_${parts.join("_")}.png`;
+        }
+
+        async function generate() {
+            if (!state.baseImage || state.busy) return;
+
+            state.busy = true;
+            updateButtons();
+            setStatus(state.mode === "catalog" ? "Generating catalog" : "Generating recolor", "busy");
+
+            try {
+                const prompt = currentPrompt();
+                const image = await requestImage(prompt, state.mode === "catalog" ? 0.18 : 0.12);
+
+                state.generatedImage = image;
+                addHistory(
+                    image,
+                    state.mode === "catalog" ? els.catalogStyle.value : els.colorName.value,
+                    state.mode,
+                    {
+                        color: state.mode === "recolor" ? els.colorName.value : "",
+                        shot: state.mode === "catalog" ? els.catalogStyle.value : "catalog",
+                    },
+                );
+                setStatus("Complete");
+                renderAll();
+            } catch (error) {
+                setStatus("Failed", "error");
+                showToast(error.message || "Generate gagal.");
+            } finally {
+                state.busy = false;
+                updateButtons();
+            }
+        }
+
+        async function generateQuickVariants() {
+            if (!state.baseImage || state.busy) return;
+
+            state.busy = true;
+            updateButtons();
+
+            const originalColor = els.targetColor.value;
+            const originalName = els.colorName.value;
+            const variants = (state.favoriteColors.length ? state.favoriteColors : quickColors).slice(0, 6);
+
+            try {
+                for (let i = 0; i < variants.length; i += 1) {
+                    const [name, hex] = variants[i];
+                    els.targetColor.value = hex;
+                    els.colorName.value = name.toLowerCase();
+                    setStatus(`Generating variant ${i + 1}/${variants.length}: ${name}`, "busy");
+                    const image = await requestImage(buildRecolorPrompt(), 0.12);
+                    state.generatedImage = image;
+                    addHistory(image, name, "recolor", { color: name, shot: "catalog" });
+                    renderAll();
+                }
+                setStatus("Quick variants complete");
+            } catch (error) {
+                setStatus("Batch failed", "error");
+                showToast(error.message || "Batch recolor gagal.");
+            } finally {
+                els.targetColor.value = originalColor;
+                els.colorName.value = originalName;
+                state.busy = false;
+                renderAll();
+            }
+        }
+
+        async function generateCatalogSet() {
+            if (!state.baseImage || state.busy) return;
+
+            state.busy = true;
+            updateButtons();
+
+            const subject = els.subjectType.value === "product_only" ? "product_only" : els.subjectType.value;
+            const shots = [
+                {
+                    label: "front",
+                    style: "white",
+                    pose: "market_front",
+                    subject,
+                    shotInstruction: "Front hero catalog shot, full garment visible, centered, clean marketplace listing image.",
+                },
+                {
+                    label: "back-side",
+                    style: "white",
+                    pose: "side_back",
+                    subject,
+                    shotInstruction: "Back or side catalog angle for 360 product listing; show side/back construction clearly without hiding garment details.",
+                },
+                {
+                    label: "detail",
+                    style: "detail",
+                    pose: "soft_hand",
+                    subject,
+                    shotInstruction: "Detail shot for fabric, stitching, embroidery, buttons, collar, cuff, pocket, label, or texture quality.",
+                },
+                {
+                    label: "flat-lay",
+                    style: "flatlay",
+                    pose: "market_front",
+                    subject: "product_only",
+                    shotInstruction: "Flat lay product-only shot for marketplace gallery, garment arranged neatly and symmetrically.",
+                },
+            ];
+
+            try {
+                for (let i = 0; i < shots.length; i += 1) {
+                    const shot = shots[i];
+                    setStatus(`Catalog set ${i + 1}/${shots.length}: ${shot.label}`, "busy");
+                    const image = await requestImage(buildCatalogPrompt(shot), 0.18);
+                    state.generatedImage = image;
+                    addHistory(image, shot.label, "catalog", { shot: shot.label });
+                    renderAll();
+                }
+                setStatus("Catalog set complete");
+            } catch (error) {
+                setStatus("Catalog set failed", "error");
+                showToast(error.message || "Catalog set gagal.");
+            } finally {
+                state.busy = false;
+                renderAll();
+            }
+        }
+
+        function useResultAsBase() {
+            if (state.busy) return;
+            if (!state.generatedImage) return;
+            state.baseImage = state.generatedImage;
+            state.baseMime = "image/png";
+            state.generatedImage = null;
+            state.detectedColors = [];
+            setStatus("Result used as base");
+            renderAll();
+        }
+
+        function downloadResult() {
+            if (state.busy) return;
+            if (!state.generatedImage) return;
+            const link = document.createElement("a");
+            const active = state.history.find((item) => item.image === state.generatedImage);
+            link.download = active
+                ? historyFilename(active, 1)
+                : `${productSlug()}_${state.mode === "recolor" ? slugify(els.colorName.value, "variant") : "catalog"}.png`;
+            link.href = state.generatedImage;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        async function downloadAllHistory() {
+            if (state.busy) return;
+            if (!state.history.length) return;
+            for (let i = state.history.length - 1; i >= 0; i -= 1) {
+                const item = state.history[i];
+                const link = document.createElement("a");
+                link.download = historyFilename(item, state.history.length - i);
+                link.href = item.image;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                await new Promise((resolve) => setTimeout(resolve, 120));
+            }
+            showToast(`Downloading ${state.history.length} image(s).`);
+        }
+
+        function clearResult() {
+            if (state.busy) return;
+            state.generatedImage = null;
+            renderAll();
+        }
+
+        function initEvents() {
+            els.uploadZone.addEventListener("click", () => {
+                if (state.busy) return showToast("Tunggu proses selesai dulu.");
+                els.fileInput.click();
+            });
+            els.uploadZone.addEventListener("keydown", (event) => {
+                if (state.busy) return;
+                if (event.key === "Enter" || event.key === " ") els.fileInput.click();
+            });
+            els.fileInput.addEventListener("change", (event) => {
+                loadFile(event.target.files?.[0]);
+                event.target.value = "";
+            });
+
+            ["dragenter", "dragover"].forEach((name) => {
+                els.uploadZone.addEventListener(name, (event) => {
+                    event.preventDefault();
+                    if (state.busy) return;
+                    els.uploadZone.classList.add("drag");
+                });
+            });
+            ["dragleave", "drop"].forEach((name) => {
+                els.uploadZone.addEventListener(name, (event) => {
+                    event.preventDefault();
+                    els.uploadZone.classList.remove("drag");
+                });
+            });
+            els.uploadZone.addEventListener("drop", (event) => {
+                if (state.busy) return showToast("Tunggu proses selesai dulu.");
+                loadFile(event.dataTransfer?.files?.[0]);
+            });
+
+            els.tabCatalog.addEventListener("click", () => setMode("catalog"));
+            els.tabRecolor.addEventListener("click", () => setMode("recolor"));
+            els.detectColorsBtn.addEventListener("click", detectColors);
+            els.generateBtn.addEventListener("click", generate);
+            els.generateCatalogSetBtn.addEventListener("click", generateCatalogSet);
+            els.generateQuickBtn.addEventListener("click", generateQuickVariants);
+            els.useResultBtn.addEventListener("click", useResultAsBase);
+            els.downloadBtn.addEventListener("click", downloadResult);
+            els.downloadAllBtn.addEventListener("click", downloadAllHistory);
+            els.copyPromptBtn.addEventListener("click", copyPrompt);
+            els.saveColorBtn.addEventListener("click", saveCurrentColor);
+            els.clearBtn.addEventListener("click", clearResult);
+            els.detectedColors.addEventListener("change", (event) => {
+                const checkbox = event.target.closest("input[data-detect-index]");
+                if (!checkbox) return;
+                const item = state.detectedColors[Number(checkbox.dataset.detectIndex)];
+                if (!item) return;
+                item.selected = checkbox.checked;
+                renderDetectedColors();
+            });
+            els.catalogStyle.addEventListener("change", updateButtons);
+            els.subjectType.addEventListener("change", updateButtons);
+            els.modelPose.addEventListener("change", updatePromptPreview);
+            els.productName.addEventListener("input", updatePromptPreview);
+            els.productHint.addEventListener("input", updatePromptPreview);
+            els.colorName.addEventListener("input", updatePromptPreview);
+            els.recolorRegion.addEventListener("input", updatePromptPreview);
+            els.compareRange.addEventListener("input", () => {
+                state.comparePosition = Number(els.compareRange.value);
+                renderCompare();
+            });
+            els.targetColor.addEventListener("input", () => {
+                document.querySelectorAll(".swatch").forEach((button) => button.classList.toggle("active", button.dataset.hex === els.targetColor.value));
+                renderFavoriteColors();
+                updatePromptPreview();
+            });
+            els.swatches.addEventListener("click", (event) => {
+                if (state.busy) return;
+                const button = event.target.closest(".swatch");
+                if (!button) return;
+                applyColorButton(button);
+            });
+            els.favoriteColors.addEventListener("click", (event) => {
+                if (state.busy) return;
+                const button = event.target.closest(".swatch");
+                if (!button) return;
+                applyColorButton(button);
+            });
+            els.history.addEventListener("click", (event) => {
+                if (state.busy) return showToast("Tunggu proses selesai dulu.");
+                const button = event.target.closest(".history-item");
+                if (!button) return;
+                const item = state.history[Number(button.dataset.index)];
+                if (!item) return;
+                state.generatedImage = item.image;
+                state.mode = item.mode || state.mode;
+                setMode(state.mode);
+                renderAll();
+            });
+        }
+
+        loadFavoriteColors();
+        renderSwatches();
+        renderFavoriteColors();
+        initEvents();
+        setMode("catalog");
+        renderAll();
+    </script>
+</body>
+
+</html>

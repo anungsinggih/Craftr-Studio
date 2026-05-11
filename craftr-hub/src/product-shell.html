@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Craftr Product Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html,
+    body,
+    #root {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    @media (max-width: 767px) {
+      body {
+        background: #eef2f7;
+      }
+
+      .craftr-native-root {
+        height: 100dvh !important;
+        background: #eef2f7 !important;
+      }
+
+      .craftr-preview-pane {
+        height: 46dvh !important;
+        min-height: 300px;
+        border-radius: 0 0 28px 28px;
+        box-shadow: 0 18px 44px rgba(15, 23, 42, 0.28);
+      }
+
+      .craftr-control-sheet {
+        flex: 1 1 auto !important;
+        min-height: 0;
+        margin-top: -22px !important;
+        border-radius: 28px 28px 0 0 !important;
+        box-shadow: 0 -14px 34px rgba(15, 23, 42, 0.14) !important;
+      }
+
+      .craftr-control-sheet > div:last-child {
+        padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+      }
+
+      .craftr-control-sheet .sticky {
+        top: 0;
+        border-radius: 28px 28px 0 0;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.04);
+      }
+
+      .craftr-control-sheet textarea,
+      .craftr-control-sheet input,
+      .craftr-control-sheet button {
+        font-size: 16px;
+      }
+
+      .craftr-control-sheet button {
+        min-height: 44px;
+      }
+
+      .craftr-control-sheet input[type="range"] {
+        min-height: 28px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .craftr-native-root {
+        background: #eef2f7 !important;
+        padding: 14px;
+        gap: 14px;
+      }
+
+      .craftr-preview-pane,
+      .craftr-control-sheet {
+        border-radius: 24px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>__PRODUCT_BUNDLE__</script>
+</body>
+</html>

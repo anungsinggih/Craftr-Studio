@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Craftr Hub</title>
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --surface: #f8fafc;
+      --panel: rgba(255, 255, 255, 0.92);
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: rgba(15, 23, 42, 0.1);
+      --accent: #4f46e5;
+      --accent-2: #db2777;
+      --good: #16a34a;
+      --shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .hub {
+      height: 100dvh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 0;
+      padding: 0;
+      background: var(--surface);
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 62px;
+      padding: max(12px, env(safe-area-inset-top, 0px)) 14px 10px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--panel);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      backdrop-filter: blur(20px);
+    }
+
+    .brand {
+      min-width: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tabs {
+      z-index: 40;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      padding: 8px 10px calc(8px + var(--safe-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 -16px 38px rgba(15, 23, 42, 0.12);
+      backdrop-filter: blur(22px);
+    }
+
+    .tab {
+      border: 0;
+      min-width: 0;
+      min-height: 54px;
+      border-radius: 14px;
+      padding: 7px 6px;
+      color: #64748b;
+      background: transparent;
+      font-size: 10px;
+      font-weight: 900;
+      transition: 0.18s ease;
+      display: grid;
+      place-items: center;
+      gap: 3px;
+    }
+
+    .tab:hover {
+      background: #eef2ff;
+      color: var(--accent);
+    }
+
+    .tab.active {
+      color: var(--accent);
+      background: #eef2ff;
+      box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.12);
+    }
+
+    .tab-icon {
+      width: 25px;
+      height: 25px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-size: 10px;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.22);
+    }
+
+    .tab-text {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .action {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      min-width: 40px;
+      min-height: 40px;
+      padding: 0 11px;
+      color: #334155;
+      background: white;
+      font-size: 0;
+      font-weight: 900;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .action::before {
+      font-size: 17px;
+    }
+
+    #reloadActive::before {
+      content: "R";
+    }
+
+    #fullscreenActive::before {
+      content: "[]";
+    }
+
+    .action:hover {
+      border-color: rgba(79, 70, 229, 0.35);
+      background: #eef2ff;
+      color: var(--accent);
+    }
+
+    .viewport {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 0;
+      background: #f8fafc;
+      box-shadow: none;
+    }
+
+    iframe {
+      display: none;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: white;
+    }
+
+    iframe.active {
+      display: block;
+    }
+
+    .status {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(22, 163, 74, 0.18);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 900;
+      pointer-events: none;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--good);
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.72);
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: hidden;
+      }
+
+      .hub {
+        height: 100dvh;
+        min-height: 0;
+      }
+
+      .topbar {
+        min-height: 58px;
+      }
+
+      .brand p {
+        display: none;
+      }
+
+      .actions {
+        flex: 0 0 auto;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .viewport {
+        height: auto;
+        min-height: 0;
+      }
+    }
+
+    @media (min-width: 981px) {
+      .hub {
+        max-width: 1480px;
+        margin: 0 auto;
+        padding: 14px;
+        gap: 12px;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .topbar,
+      .tabs,
+      .viewport {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+      }
+
+      .viewport {
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="hub">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Craftr Hub</h1>
+        <p>Single Canvas workspace for all saved Craftr tools.</p>
+      </div>
+
+      <nav id="tabs" class="tabs" aria-label="Craftr tools"></nav>
+
+      <div class="actions">
+        <button id="reloadActive" class="action" type="button">Reload Active</button>
+        <button id="fullscreenActive" class="action" type="button">Fullscreen</button>
+      </div>
+    </header>
+
+    <section id="viewport" class="viewport" aria-label="Active Craftr tool">
+      <div class="status"><span class="dot"></span><span id="activeLabel"></span></div>
+    </section>
+  </main>
+
+  <script>
+    const apiKey = ''; // System injected
+    const apps = __APPS_JSON__;
+    const tabsEl = document.getElementById('tabs');
+    const viewport = document.getElementById('viewport');
+    const activeLabel = document.getElementById('activeLabel');
+    const reloadActive = document.getElementById('reloadActive');
+    const fullscreenActive = document.getElementById('fullscreenActive');
+    const frames = new Map();
+    let activeId = apps[0].id;
+
+    const withCanvasApiKey = (rawUrl) => {
+      const url = new URL(rawUrl);
+
+      if (url.hostname === 'generativelanguage.googleapis.com' && !url.searchParams.get('key')) {
+        url.searchParams.set('key', apiKey);
+      }
+
+      return url.toString();
+    };
+
+    window.addEventListener('message', async (event) => {
+      const message = event.data;
+      if (!message || message.type !== 'craftr-gemini-fetch') return;
+
+      try {
+        const response = await fetch(withCanvasApiKey(message.url), message.options || {});
+        const headers = Array.from(response.headers.entries());
+        const body = await response.text();
+
+        event.source.postMessage(
+          {
+            type: 'craftr-gemini-fetch-result',
+            id: message.id,
+            ok: true,
+            response: {
+              body,
+              headers,
+              status: response.status,
+              statusText: response.statusText,
+            },
+          },
+          '*',
+        );
+      } catch (error) {
+        event.source.postMessage(
+          {
+            type: 'craftr-gemini-fetch-result',
+            id: message.id,
+            ok: false,
+            error: error.message || 'Gemini request failed',
+          },
+          '*',
+        );
+      }
+    });
+
+    const createFrame = (app) => {
+      const frame = document.createElement('iframe');
+      frame.id = app.id;
+      frame.title = app.label;
+      frame.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen');
+      frame.srcdoc = app.html;
+      viewport.insertBefore(frame, viewport.firstChild);
+      frames.set(app.id, frame);
+      return frame;
+    };
+
+    const setActive = (id) => {
+      activeId = id;
+      const app = apps.find((item) => item.id === id);
+      if (!frames.has(id)) createFrame(app);
+
+      frames.forEach((frame, frameId) => {
+        frame.classList.toggle('active', frameId === id);
+      });
+
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.classList.toggle('active', tab.dataset.target === id);
+      });
+
+      activeLabel.textContent = `${app.label} active`;
+      document.title = `Craftr Hub - ${app.label}`;
+    };
+
+    apps.forEach((app) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tab';
+      button.dataset.target = app.id;
+      const icon = document.createElement('span');
+      icon.className = 'tab-icon';
+      icon.textContent = app.label
+        .split(/\s+/)
+        .map((word) => word[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+      const text = document.createElement('span');
+      text.className = 'tab-text';
+      text.textContent = app.label.replace(' Generator', '').replace(' Studio', '');
+      button.append(icon, text);
+      button.addEventListener('click', () => setActive(app.id));
+      tabsEl.appendChild(button);
+    });
+
+    reloadActive.addEventListener('click', () => {
+      const frame = frames.get(activeId);
+      if (frame) frame.srcdoc = apps.find((item) => item.id === activeId).html;
+    });
+
+    fullscreenActive.addEventListener('click', () => {
+      const frame = frames.get(activeId);
+      if (frame?.requestFullscreen) frame.requestFullscreen();
+    });
+
+    setActive(activeId);
+  </script>
+</body>
+</html>

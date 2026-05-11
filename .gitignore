@@ -1,0 +1,47 @@
+# Dependency directories
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup and temporary files
+_backup*/
+*.tmp
+*.bak
+*.swp
+
+# IDE/Editor specific
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# AI/Assistant specific
+.gemini/
+.antigravity/
+knowledge/
+brain/
