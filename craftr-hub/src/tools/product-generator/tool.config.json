@@ -1,0 +1,9 @@
+{
+  "id": "productGen",
+  "label": "Product Generator",
+  "type": "jsx",
+  "order": 10,
+  "entry": "entry.jsx",
+  "shell": "product-shell.html",
+  "globalName": "CraftrProductGen"
+}

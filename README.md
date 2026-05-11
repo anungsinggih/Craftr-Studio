@@ -1,81 +1,57 @@
-# Craftr Studio 🎨✨
+# Craftr Studio
 
-> **The Premium AI-Driven Ecosystem for Circular Wall Decor**
+Premium AI-driven tools for circular wall decor products, bundled into a single Hub workspace.
 
-Craftr Studio is an advanced suite of tools designed to streamline the workflow for creating, visualizing, and preparing high-fidelity circular art (MDF Boards) for the modern marketplace.
+## Active Modules
 
----
+- **Craftr Hub**: Central portal, build orchestrator, shared theme, and API bridge.
+- **Product Generator**: Imagen-powered circular art generator with center-lock print preparation.
+- **Scene Generator**: Gemini-powered lifestyle, collection, and catalogue mockup generator.
+- **Mockup Studio**: Product mockup and marketplace asset workflow.
+- **Bobing Studio**: Fashion catalogue and recolor workspace.
 
-## 🚀 Key Modules
-
-### 🛠️ Craftr Hub
-The central cockpit. A unified workspace that orchestrates all Craftr tools in a single, high-performance interface. 
-- **Features:** Secure API proxy, unified design system, and multi-tool iframe management.
-
-### 🖼️ Craftr Studio V2 (Mockup Engine)
-Turn your designs into photorealistic product photos instantly.
-- **AI Engine:** Gemini 2.5 Flash.
-- **Scenes:** Minimalist, Retro, Industrial, Neon, and Cozy Nook.
-- **Accuracy:** Tuned for 20cm MDF boards with optional DVD/CD geometry.
-- **Polish:** Integrated auto-analysis to sync design brightness with mockup lighting.
-
-### 🎨 AI Craftr (Design Generator)
-Generate sellable, print-ready art from a single prompt.
-- **AI Engine:** Imagen 4.0.
-- **Center-Lock:** Proprietary prompt engineering ensures your subject is perfectly centered and never cropped.
-- **Styles:** Flat Vector, Scandi, Watercolor, Line Art, and more.
-- **Refiner:** AI-powered art direction to level up your simple ideas.
-
----
-
-## 📦 Project Structure
+## Project Structure
 
 ```text
 Craftr-Studio/
-├── craftr-hub/             # Central portal & build orchestrator
-│   ├── src/                # Hub templates and entry points
-│   ├── scripts/            # esbuild build scripts
-│   └── dist/               # Final bundled output
+├── craftr-hub/
+│   ├── scripts/            # Build and scaffolding scripts
+│   ├── src/
+│   │   ├── shared/         # Shared JSX shell, UI primitives, and base CSS
+│   │   ├── tools/          # Modular tool entries and configs
+│   │   ├── hub-template.html
+│   │   └── tool-theme.css
+│   └── dist/               # Ignored build output
+├── PRD.md
+└── README.md
 ```
 
----
+All active tool source lives in `craftr-hub/src/tools`.
 
-## 🛠️ Tech Stack
+## Build
 
-- **Core:** React 18, HTML5 Canvas, Tailwind CSS.
-- **AI Integration:** Google Gemini 2.5 Flash, Google Imagen 4.0.
-- **Build Engine:** esbuild (Custom build pipeline).
-- **Architecture:** Iframe-based micro-frontends with a unified API bridge.
+```bash
+cd craftr-hub
+npm install
+npm run build
+```
 
----
+Open `craftr-hub/dist/index.html` after building.
 
-## 🚀 Getting Started
+## Add A Tool
 
-### Prerequisites
-- Node.js (v18+)
-- A Google AI API Key
+```bash
+cd craftr-hub
+npm run new:tool -- --id product-audit --label "Product Audit" --order 100
+npm run build
+```
 
-### Build & Run
-1. Install dependencies:
-   ```bash
-   cd craftr-hub
-   npm install
-   ```
-2. Build the unified hub:
-   ```bash
-   npm run build
-   ```
-3. Open `craftr-hub/dist/index.html` in your browser.
+Each active tool needs a `tool.config.json` under `craftr-hub/src/tools/<tool-id>/`.
 
----
+## Production Standards
 
-## 📐 Production Standards
+- Physical format: 200mm round MDF board, 6mm thickness.
+- Export target: high-resolution print assets.
+- Fidelity target: 90%+ print match through center-locked composition.
 
-- **Physical Specs:** 200mm Diameter, 6mm Thickness.
-- **Print Resolution:** 300 PPI Export.
-- **Fidelity:** 90%+ Print Match Score guaranteed via Center-Lock composition.
-
----
-
-## 📄 License
-© 2026 Bobing Corp. All rights reserved. Built with ❤️ for the creative community.
+© 2026 Bobing Corp. All rights reserved.

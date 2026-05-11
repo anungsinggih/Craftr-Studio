@@ -1,0 +1,8 @@
+{
+  "id": "sceneGen",
+  "label": "Scene Generator",
+  "type": "jsx",
+  "order": 20,
+  "entry": "entry.jsx",
+  "globalName": "CraftrSceneGenerator"
+}

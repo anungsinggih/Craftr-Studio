@@ -4,18 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Craftr Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #eef2f7;
-      --surface: #f8fafc;
-      --panel: rgba(255, 255, 255, 0.92);
-      --ink: #0f172a;
-      --muted: #64748b;
-      --line: rgba(15, 23, 42, 0.1);
-      --accent: #4f46e5;
-      --accent-2: #db2777;
-      --good: #16a34a;
-      --shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #f7f8fc;
+      --surface: #f7f8fc;
+      --panel: #ffffff;
+      --panel-2: #f8fafc;
+      --ink: #101828;
+      --muted: #667085;
+      --line: #e6e8ef;
+      --accent: #7c3aed;
+      --accent-2: #00c4cc;
+      --accent-soft: #ecfeff;
+      --accent-wash: #f5f3ff;
+      --good: #12b76a;
+      --shadow: 0 22px 54px rgba(16, 24, 40, 0.09);
+      --shadow-soft: 0 8px 22px rgba(16, 24, 40, 0.06);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
@@ -27,45 +35,62 @@
     body {
       width: 100%;
       height: 100%;
+      font-family: var(--font);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
       margin: 0;
       overflow: hidden;
       color: var(--ink);
-      background: var(--bg);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(0, 196, 204, 0.14), transparent 26%),
+        radial-gradient(circle at 92% 4%, rgba(124, 58, 237, 0.12), transparent 28%),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 46%, #eef2f7 100%);
+      font-family: var(--font);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
 
     button {
-      font: inherit;
       cursor: pointer;
+    }
+
+    button:focus-visible,
+    iframe:focus-visible {
+      outline: 3px solid rgba(0, 196, 204, 0.28);
+      outline-offset: 2px;
     }
 
     .hub {
       height: 100dvh;
       display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 0;
-      padding: 0;
-      background: var(--surface);
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 16px;
+      padding: 18px;
+      background: transparent;
     }
 
     .topbar {
       position: relative;
       z-index: 30;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      min-height: 62px;
-      padding: max(12px, env(safe-area-inset-top, 0px)) 14px 10px;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      border-radius: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      min-height: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
       background: var(--panel);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
     }
 
     .brand {
@@ -74,7 +99,7 @@
 
     .brand h1 {
       margin: 0;
-      font-size: 17px;
+      font-size: 21px;
       line-height: 1;
       letter-spacing: 0;
     }
@@ -82,62 +107,62 @@
     .brand p {
       margin: 6px 0 0;
       color: var(--muted);
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .tabs {
       z-index: 40;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 6px;
-      padding: 8px 10px calc(8px + var(--safe-bottom));
-      border-top: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 -16px 38px rgba(15, 23, 42, 0.12);
-      backdrop-filter: blur(22px);
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      padding: 0;
     }
 
     .tab {
-      border: 0;
+      border: 1px solid transparent;
       min-width: 0;
       min-height: 54px;
-      border-radius: 14px;
-      padding: 7px 6px;
-      color: #64748b;
+      border-radius: 16px;
+      padding: 9px 10px;
+      color: var(--muted);
       background: transparent;
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 900;
-      transition: 0.18s ease;
-      display: grid;
-      place-items: center;
-      gap: 3px;
+      transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
     }
 
     .tab:hover {
-      background: #eef2ff;
+      background: linear-gradient(135deg, rgba(236, 254, 255, 0.7), rgba(245, 243, 255, 0.82));
       color: var(--accent);
+      transform: translateY(-1px);
     }
 
     .tab.active {
-      color: var(--accent);
-      background: #eef2ff;
-      box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.12);
+      color: #6d28d9;
+      border-color: rgba(124, 58, 237, 0.2);
+      background: linear-gradient(135deg, rgba(236, 254, 255, 0.96), rgba(245, 243, 255, 0.98));
+      box-shadow: 0 12px 26px rgba(14, 165, 233, 0.14);
     }
 
     .tab-icon {
-      width: 25px;
-      height: 25px;
-      border-radius: 10px;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border-radius: 14px;
       display: grid;
       place-items: center;
-      color: white;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      font-size: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      font-size: 11px;
       line-height: 1;
-      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.22);
+      box-shadow: 0 10px 22px rgba(14, 165, 233, 0.16);
     }
 
     .tab-text {
@@ -147,53 +172,14 @@
       white-space: nowrap;
     }
 
-    .actions {
-      display: flex;
-      gap: 7px;
-      justify-content: flex-end;
-    }
-
-    .action {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      min-width: 40px;
-      min-height: 40px;
-      padding: 0 11px;
-      color: #334155;
-      background: white;
-      font-size: 0;
-      font-weight: 900;
-      text-decoration: none;
-      white-space: nowrap;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-    }
-
-    .action::before {
-      font-size: 17px;
-    }
-
-    #reloadActive::before {
-      content: "R";
-    }
-
-    #fullscreenActive::before {
-      content: "[]";
-    }
-
-    .action:hover {
-      border-color: rgba(79, 70, 229, 0.35);
-      background: #eef2ff;
-      color: var(--accent);
-    }
-
     .viewport {
       position: relative;
       min-height: 0;
       overflow: hidden;
-      border: 0;
-      border-radius: 0;
-      background: #f8fafc;
-      box-shadow: none;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
     iframe {
@@ -219,12 +205,12 @@
       border: 1px solid rgba(22, 163, 74, 0.18);
       border-radius: 999px;
       padding: 7px 10px;
-      background: rgba(255, 255, 255, 0.9);
-      color: #15803d;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--good);
       font-size: 11px;
       font-weight: 900;
       pointer-events: none;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
     }
 
     .dot {
@@ -241,51 +227,80 @@
       }
 
       .hub {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0, 1fr);
         height: 100dvh;
         min-height: 0;
+        gap: 0;
+        padding: 0;
       }
 
       .topbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         min-height: 58px;
+        padding: max(12px, env(safe-area-inset-top, 0px)) 14px 10px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
       }
 
       .brand p {
         display: none;
       }
 
-      .actions {
-        flex: 0 0 auto;
+      .brand h1 {
+        font-size: 17px;
+      }
+
+      .tabs {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        padding: 8px 10px calc(8px + var(--safe-bottom));
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 -16px 38px rgba(15, 23, 42, 0.1);
+        backdrop-filter: blur(22px);
+      }
+
+      .tab {
+        min-height: 54px;
+        justify-content: center;
+        display: grid;
+        place-items: center;
+        gap: 3px;
+        padding: 7px 6px;
+        font-size: 10px;
+        text-align: center;
+      }
+
+      .tab-icon {
+        width: 25px;
+        height: 25px;
+        flex-basis: 25px;
+        border-radius: 10px;
+        font-size: 10px;
+      }
+
+      .viewport {
+        border: 0;
+        border-radius: 0;
+        height: auto;
+        min-height: 0;
+        box-shadow: none;
+        padding-bottom: calc(72px + var(--safe-bottom));
       }
 
       .status {
         display: none;
-      }
-
-      .viewport {
-        height: auto;
-        min-height: 0;
-      }
-    }
-
-    @media (min-width: 981px) {
-      .hub {
-        max-width: 1480px;
-        margin: 0 auto;
-        padding: 14px;
-        gap: 12px;
-        grid-template-rows: auto 1fr auto;
-      }
-
-      .topbar,
-      .tabs,
-      .viewport {
-        border: 1px solid var(--line);
-        border-radius: 22px;
-      }
-
-      .viewport {
-        overflow: hidden;
-        box-shadow: var(--shadow);
       }
     }
   </style>
@@ -300,10 +315,6 @@
 
       <nav id="tabs" class="tabs" aria-label="Craftr tools"></nav>
 
-      <div class="actions">
-        <button id="reloadActive" class="action" type="button">Reload Active</button>
-        <button id="fullscreenActive" class="action" type="button">Fullscreen</button>
-      </div>
     </header>
 
     <section id="viewport" class="viewport" aria-label="Active Craftr tool">
@@ -317,8 +328,6 @@
     const tabsEl = document.getElementById('tabs');
     const viewport = document.getElementById('viewport');
     const activeLabel = document.getElementById('activeLabel');
-    const reloadActive = document.getElementById('reloadActive');
-    const fullscreenActive = document.getElementById('fullscreenActive');
     const frames = new Map();
     let activeId = apps[0].id;
 
@@ -415,16 +424,6 @@
       button.append(icon, text);
       button.addEventListener('click', () => setActive(app.id));
       tabsEl.appendChild(button);
-    });
-
-    reloadActive.addEventListener('click', () => {
-      const frame = frames.get(activeId);
-      if (frame) frame.srcdoc = apps.find((item) => item.id === activeId).html;
-    });
-
-    fullscreenActive.addEventListener('click', () => {
-      const frame = frames.get(activeId);
-      if (frame?.requestFullscreen) frame.requestFullscreen();
     });
 
     setActive(activeId);

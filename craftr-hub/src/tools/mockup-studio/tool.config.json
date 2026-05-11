@@ -1,0 +1,8 @@
+{
+  "id": "mockupStudio",
+  "label": "Mockup Studio",
+  "type": "jsx",
+  "order": 30,
+  "entry": "entry.jsx",
+  "globalName": "CraftrMockupStudio"
+}

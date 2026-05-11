@@ -1,0 +1,128 @@
+.craftr-tool-shell {
+  min-height: 100dvh;
+  padding: 20px;
+  background: var(--craftr-bg);
+  color: var(--craftr-text);
+  overflow: auto;
+  font-family: var(--craftr-font);
+}
+
+.craftr-tool-main {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.craftr-tool-header,
+.craftr-card,
+.craftr-toolbar {
+  border: 1px solid var(--craftr-line);
+  border-radius: 20px;
+  background: var(--craftr-panel);
+  box-shadow: var(--craftr-shadow);
+}
+
+.craftr-tool-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+}
+
+.craftr-tool-header h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.craftr-tool-header p {
+  margin: 6px 0 0;
+  color: var(--craftr-muted);
+  font-size: 13px;
+}
+
+.craftr-card {
+  padding: 18px;
+}
+
+.craftr-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+.craftr-button {
+  min-height: 44px;
+  border: 1px solid var(--craftr-line);
+  border-radius: 14px;
+  padding: 0 14px;
+  font-weight: 850;
+  letter-spacing: 0;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+
+.craftr-button-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--craftr-accent-2), #8b5cf6);
+  border-color: rgba(124, 58, 237, 0.38);
+}
+
+.craftr-button-secondary {
+  color: var(--craftr-text);
+  background: var(--craftr-panel);
+}
+
+.craftr-field {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.craftr-field small,
+.craftr-upload-zone span {
+  color: var(--craftr-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.craftr-field input,
+.craftr-field textarea,
+.craftr-field select {
+  width: 100%;
+  border: 1px solid var(--craftr-line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  color: var(--craftr-text);
+}
+
+.craftr-upload-zone {
+  min-height: 160px;
+  border: 1px dashed rgba(124, 58, 237, 0.34);
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  padding: 18px;
+  color: var(--craftr-accent);
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.78), rgba(245, 243, 255, 0.88));
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .craftr-tool-shell {
+    padding: 12px;
+  }
+
+  .craftr-tool-header {
+    align-items: flex-start;
+    flex-direction: column;
+    border-radius: 18px;
+  }
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertCircle,
   ArrowRight,
+  ChevronDown,
   CheckCircle,
   Download,
   FileUp,
@@ -790,7 +791,7 @@ const AI_Craftr_Fixed = () => {
       </div>
 
       <div
-        className={`craftr-control-sheet bg-white z-30 flex flex-col order-2 md:order-1 w-full md:w-[430px] flex-1 md:h-full shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] md:shadow-xl rounded-t-3xl md:rounded-none overflow-hidden relative -mt-6 md:mt-0 ${
+        className={`craftr-control-sheet bg-white z-30 flex flex-col order-2 md:order-1 w-full md:w-[460px] xl:w-[500px] flex-1 md:h-full shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] md:shadow-xl rounded-t-3xl md:rounded-none overflow-hidden relative -mt-6 md:mt-0 ${
           isFullScreen ? 'hidden' : 'flex'
         }`}
       >
@@ -884,23 +885,21 @@ const AI_Craftr_Fixed = () => {
                   </div>
                   <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">{activeStyleObj.label}</span>
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {STYLE_PRESETS.map((style) => (
-                    <button
-                      key={style.id}
-                      type="button"
-                      onClick={() => setSelectedStyle(style.id)}
-                      className={`flex flex-col items-center justify-center p-3 rounded-xl border min-h-[74px] transition-all ${
-                        selectedStyle === style.id ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-200' : 'border-slate-200 hover:border-indigo-300 bg-white'
-                      }`}
-                    >
-                      <span className="text-[10px] font-black tracking-wide text-slate-400 mb-1">{style.code}</span>
-                      <span className={`text-[10px] font-bold text-center leading-tight ${selectedStyle === style.id ? 'text-indigo-700' : 'text-slate-600'}`}>
-                        {style.label}
-                      </span>
-                    </button>
-                  ))}
+                <div className="relative">
+                  <select
+                    value={selectedStyle}
+                    onChange={(event) => setSelectedStyle(event.target.value)}
+                    className="w-full min-h-[50px] appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm font-bold text-slate-800 shadow-sm outline-none transition-all focus:border-indigo-400 focus:ring-2 focus:ring-cyan-100"
+                  >
+                    {STYLE_PRESETS.map((style) => (
+                      <option key={style.id} value={style.id}>
+                        {style.code} - {style.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 </div>
+                <p className="mt-2 truncate text-[11px] font-semibold text-slate-500">{activeStyleObj.prompt}</p>
               </div>
 
               <div>

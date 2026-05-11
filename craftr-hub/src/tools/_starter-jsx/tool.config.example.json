@@ -1,0 +1,8 @@
+{
+  "id": "newTool",
+  "label": "New Tool",
+  "type": "jsx",
+  "order": 100,
+  "entry": "entry.jsx",
+  "globalName": "NewToolApp"
+}

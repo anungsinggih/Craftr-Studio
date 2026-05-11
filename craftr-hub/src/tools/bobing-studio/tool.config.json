@@ -1,0 +1,8 @@
+{
+  "id": "bobingStudio",
+  "label": "Bobing Studio",
+  "type": "jsx",
+  "order": 40,
+  "entry": "entry.jsx",
+  "globalName": "CraftrBobingStudio"
+}

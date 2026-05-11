@@ -1,0 +1,606 @@
+.scene-chip,
+.scene-status,
+.scene-kicker {
+  letter-spacing: 0;
+}
+
+.scene-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--craftr-accent);
+  background:
+    linear-gradient(135deg, rgba(236, 254, 255, 0.92), rgba(245, 243, 255, 0.98)),
+    #fff;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.scene-card {
+  border-color: rgba(226, 232, 240, 0.94);
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.07);
+}
+
+.scene-mode-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 10px;
+  background:
+    radial-gradient(circle at 0 0, rgba(6, 182, 212, 0.12), transparent 34%),
+    radial-gradient(circle at 100% 0, rgba(124, 58, 237, 0.1), transparent 36%),
+    #fff;
+}
+
+.scene-mode-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(248, 250, 252, 0.62));
+}
+
+.scene-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.scene-tab,
+.scene-file button {
+  font: inherit;
+}
+
+.scene-tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  min-width: 0;
+  min-height: 82px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 18px;
+  padding: 13px;
+  color: var(--craftr-muted);
+  background: rgba(255, 255, 255, 0.88);
+  text-align: left;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.scene-tab::before {
+  content: "";
+  grid-row: 1 / span 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 13px;
+  background:
+    linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(124, 58, 237, 0.16)),
+    #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.1);
+}
+
+.scene-tab:hover,
+.scene-upload-zone:hover {
+  transform: translateY(-1px);
+  border-color: rgba(124, 58, 237, 0.28);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.scene-tab:focus-visible,
+.scene-upload-zone:focus-visible,
+.scene-file button:focus-visible {
+  outline: 3px solid rgba(6, 182, 212, 0.25);
+  outline-offset: 3px;
+}
+
+.scene-tab strong,
+.scene-tab span,
+.scene-prompt-card .craftr-field small {
+  display: block;
+  min-width: 0;
+}
+
+.scene-tab strong {
+  align-self: end;
+  color: var(--craftr-text);
+  font-size: 13px;
+}
+
+.scene-tab span {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.scene-tab.active {
+  border-color: rgba(124, 58, 237, 0.3);
+  color: #5b21b6;
+  background:
+    linear-gradient(135deg, rgba(236, 254, 255, 0.96), rgba(245, 243, 255, 1)),
+    #fff;
+  box-shadow: 0 18px 38px rgba(124, 58, 237, 0.14);
+}
+
+.scene-tab.active::before {
+  background: linear-gradient(135deg, #06b6d4, #7c3aed);
+  box-shadow: 0 10px 26px rgba(124, 58, 237, 0.22);
+}
+
+.scene-tab.active::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #06b6d4;
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
+}
+
+.scene-grid {
+  display: grid;
+  grid-template-columns: minmax(420px, 0.98fr) minmax(420px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.scene-stack {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.scene-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.scene-section-head h2 {
+  margin: 2px 0 0;
+  color: var(--craftr-text);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.scene-kicker {
+  margin: 0;
+  color: var(--craftr-accent);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.scene-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border: 1px solid rgba(226, 232, 240, 0.86);
+  border-radius: 999px;
+  padding: 0 10px;
+  color: var(--craftr-muted);
+  background: var(--craftr-elevated);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.scene-status.good {
+  border-color: rgba(16, 185, 129, 0.22);
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.scene-upload-zone {
+  position: relative;
+  min-height: 190px;
+  border: 1.5px dashed rgba(6, 182, 212, 0.42);
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  padding: 22px;
+  background:
+    linear-gradient(135deg, rgba(236, 254, 255, 0.88), rgba(245, 243, 255, 0.94)),
+    #fff;
+  color: var(--craftr-accent);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.scene-upload-zone::before {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  margin-bottom: 3px;
+  color: #fff;
+  background: linear-gradient(135deg, #06b6d4, #7c3aed);
+  box-shadow: 0 16px 30px rgba(6, 182, 212, 0.2);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.scene-upload-zone strong {
+  color: var(--craftr-text);
+  font-size: 15px;
+}
+
+.scene-upload-zone span,
+.scene-empty,
+.scene-file span,
+.scene-placeholder span,
+.scene-loading span {
+  color: var(--craftr-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.scene-file-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.scene-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  border: 1px solid var(--craftr-line);
+  border-radius: 16px;
+  padding: 13px;
+  background: var(--craftr-elevated);
+  font-weight: 800;
+}
+
+.scene-file {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--craftr-line);
+  border-radius: 16px;
+  padding: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+}
+
+.scene-file img {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--craftr-elevated);
+}
+
+.scene-file strong {
+  display: block;
+  color: var(--craftr-text);
+  font-size: 13px;
+}
+
+.scene-file span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-file button {
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  border-radius: 999px;
+  min-height: 34px;
+  padding: 0 10px;
+  color: #dc2626;
+  background: #fff5f5;
+  font-size: 11px;
+  font-weight: 900;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.scene-file button:hover {
+  border-color: rgba(239, 68, 68, 0.32);
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
+
+.scene-prompt-card {
+  display: grid;
+  gap: 16px;
+}
+
+.scene-preset-select {
+  min-height: 48px;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #64748b 50%),
+    linear-gradient(135deg, #64748b 50%, transparent 50%),
+    linear-gradient(135deg, rgba(236, 254, 255, 0.75), rgba(245, 243, 255, 0.85));
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 14px) 50%,
+    0 0;
+  background-size:
+    6px 6px,
+    6px 6px,
+    100% 100%;
+  background-repeat: no-repeat;
+  font-weight: 850;
+}
+
+.scene-prompt-card .craftr-field small {
+  max-width: 100%;
+  min-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-prompt-card .craftr-field textarea {
+  min-height: 168px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.scene-prompt-card .craftr-button-secondary {
+  width: 100%;
+}
+
+.scene-result-card {
+  position: sticky;
+  top: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92)),
+    #fff;
+}
+
+.scene-result-card .scene-section-head {
+  align-items: flex-start;
+}
+
+.scene-workflow {
+  counter-reset: workflow;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.scene-workflow span {
+  counter-increment: workflow;
+  border: 1px solid var(--craftr-line);
+  border-radius: 999px;
+  padding: 8px 9px;
+  color: var(--craftr-muted);
+  background: var(--craftr-elevated);
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.scene-workflow span::before {
+  content: counter(workflow) ". ";
+  color: #94a3b8;
+}
+
+.scene-workflow span.done {
+  border-color: rgba(16, 185, 129, 0.24);
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.scene-workflow span.done::before {
+  color: #059669;
+}
+
+.scene-error {
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  padding: 12px;
+  color: #b91c1c;
+  background: #fef2f2;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.scene-preview {
+  min-height: 440px;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(45deg, rgba(148, 163, 184, 0.08) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(148, 163, 184, 0.08) 25%, transparent 25%),
+    linear-gradient(135deg, #ffffff, #f8fafc);
+  background-position: 0 0, 0 9px, 0 0;
+  background-size: 18px 18px, 18px 18px, auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.scene-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.scene-placeholder,
+.scene-loading {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.scene-placeholder::before,
+.scene-loading::before {
+  content: "";
+  width: 52px;
+  height: 52px;
+  border-radius: 19px;
+  background:
+    linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(124, 58, 237, 0.16)),
+    #fff;
+  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.1);
+}
+
+.scene-loading::before {
+  border: 3px solid rgba(124, 58, 237, 0.14);
+  border-top-color: #06b6d4;
+  animation: scene-spin 0.9s linear infinite;
+  background: #fff;
+}
+
+.scene-placeholder strong,
+.scene-loading strong {
+  color: var(--craftr-text);
+  font-size: 15px;
+}
+
+.scene-generate {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.scene-generate:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+@keyframes scene-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1180px) {
+  .scene-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.9fr);
+  }
+}
+
+@media (max-width: 980px) {
+  .scene-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-result-card {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .scene-chip {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .scene-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .scene-tab {
+    flex: 0 0 min(76vw, 215px);
+    scroll-snap-align: start;
+  }
+
+  .scene-section-head {
+    align-items: flex-start;
+  }
+
+  .scene-upload-zone {
+    min-height: 170px;
+  }
+
+  .scene-preview {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 520px) {
+  .scene-mode-card {
+    padding: 8px;
+  }
+
+  .scene-card {
+    border-radius: 20px;
+  }
+
+  .scene-file-list {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-file {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .scene-file button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .scene-workflow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .scene-workflow span {
+    padding-inline: 6px;
+    font-size: 10px;
+  }
+
+  .scene-preview {
+    min-height: 290px;
+    border-radius: 18px;
+  }
+
+  .scene-result-card .scene-section-head {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .scene-result-card .craftr-button-secondary {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-tab,
+  .scene-upload-zone,
+  .scene-file button {
+    transition: none;
+  }
+
+  .scene-tab:hover,
+  .scene-upload-zone:hover,
+  .scene-file button:hover {
+    transform: none;
+  }
+
+  .scene-loading::before {
+    animation: none;
+  }
+}

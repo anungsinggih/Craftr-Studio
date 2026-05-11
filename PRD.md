@@ -41,7 +41,7 @@ E-commerce sellers face three major hurdles when selling custom printed products
 ### 4.3 Craftr Hub (Workspace)
 *   **Multi-App Orchestration**: A single-page portal that loads various Craftr tools into isolated, iframes.
 *   **Secure API Proxy**: Handles communication with Google AI services (Gemini/Imagen) securely.
-*   **Unified UI**: Shared design language (Dark Mode, Glassmorphism, Premium Typography).
+*   **Unified UI**: Shared light SaaS design language, responsive Hub navigation, and premium typography.
 
 ---
 
@@ -66,6 +66,6 @@ E-commerce sellers face three major hurdles when selling custom printed products
 ---
 
 ## 7. Future Roadmap
-*   **3D Scene Support**: Integration with `craftr-scene` for true 3D spatial mockups.
+*   **3D Scene Support**: Extend the modular Scene Generator for true 3D spatial mockups.
 *   **Custom Product Shapes**: Support for Hexagons, Hearts, and Custom Die-cuts.
 *   **Batch Processing**: Generate entire collections (10+ designs) from a single theme.
