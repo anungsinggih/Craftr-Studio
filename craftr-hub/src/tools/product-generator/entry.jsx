@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import {
   AlertCircle,
   ArrowRight,
@@ -1265,3 +1266,5 @@ const AI_Craftr_Fixed = () => {
 };
 
 export default AI_Craftr_Fixed;
+
+createRoot(document.getElementById('root')).render(<AI_Craftr_Fixed />);
