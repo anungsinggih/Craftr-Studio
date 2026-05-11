@@ -1,93 +1,206 @@
+/* =============================================================================
+   CRAFTR SHARED TOOL TEMPLATE
+   Premium primitives used by ToolShell, Card, Button, Field, UploadZone
+   ============================================================================= */
+
 .craftr-tool-shell {
   min-height: 100dvh;
-  padding: 20px;
-  background: var(--craftr-bg);
+  padding: 24px;
+  background: transparent;
   color: var(--craftr-text);
   overflow: auto;
   font-family: var(--craftr-font);
 }
 
 .craftr-tool-main {
-  max-width: 1160px;
+  max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
+/* ─── Base card / panel ───────────────────────────────────────────── */
 .craftr-tool-header,
 .craftr-card,
 .craftr-toolbar {
+  position: relative;
   border: 1px solid var(--craftr-line);
-  border-radius: 20px;
-  background: var(--craftr-panel);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 251, 254, 0.94) 100%);
   box-shadow: var(--craftr-shadow);
 }
 
+.craftr-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ─── Tool header (title + subtitle + aside) ──────────────────────── */
 .craftr-tool-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 20px;
+  gap: 18px;
+  padding: 22px 24px;
+  overflow: hidden;
+}
+
+.craftr-tool-header::after {
+  content: "";
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 280px;
+  height: 140px;
+  background:
+    radial-gradient(200px 100px at 20% 20%, rgba(6, 182, 212, 0.12), transparent 60%),
+    radial-gradient(180px 120px at 80% 10%, rgba(124, 58, 237, 0.1), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.craftr-tool-header > div {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
 }
 
 .craftr-tool-header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 900;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  color: var(--craftr-text);
 }
 
 .craftr-tool-header p {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   color: var(--craftr-muted);
   font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
 }
 
+.craftr-tool-header-aside {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+/* ─── Card ────────────────────────────────────────────────────────── */
 .craftr-card {
-  padding: 18px;
+  padding: 20px;
+  transition: box-shadow 0.3s var(--craftr-ease);
 }
 
+.craftr-card:hover {
+  box-shadow: var(--craftr-shadow-md);
+}
+
+/* ─── Toolbar ─────────────────────────────────────────────────────── */
 .craftr-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px;
+  padding: 12px;
 }
 
+/* ─── Buttons ─────────────────────────────────────────────────────── */
 .craftr-button {
-  min-height: 44px;
+  position: relative;
+  min-height: 46px;
   border: 1px solid var(--craftr-line);
   border-radius: 14px;
-  padding: 0 14px;
-  font-weight: 850;
-  letter-spacing: 0;
-  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  padding: 0 18px;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition:
+    border-color 0.22s var(--craftr-ease),
+    background 0.22s var(--craftr-ease),
+    color 0.22s var(--craftr-ease),
+    transform 0.22s var(--craftr-ease),
+    box-shadow 0.22s var(--craftr-ease),
+    filter 0.22s var(--craftr-ease);
+}
+
+.craftr-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none !important;
+  filter: none !important;
 }
 
 .craftr-button-primary {
-  color: #fff;
-  background: linear-gradient(135deg, var(--craftr-accent-2), #8b5cf6);
-  border-color: rgba(124, 58, 237, 0.38);
+  color: #ffffff;
+  background: var(--craftr-brand-gradient);
+  border-color: rgba(124, 58, 237, 0.42);
+  box-shadow: var(--craftr-shadow-brand);
+}
+
+.craftr-button-primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  filter: saturate(1.12) brightness(1.03);
+  box-shadow: 0 20px 44px -10px rgba(124, 58, 237, 0.46), 0 8px 18px -4px rgba(6, 182, 212, 0.28);
+}
+
+.craftr-button-primary:not(:disabled):active {
+  transform: translateY(0);
 }
 
 .craftr-button-secondary {
   color: var(--craftr-text);
   background: var(--craftr-panel);
+  box-shadow: var(--craftr-shadow-xs);
 }
 
+.craftr-button-secondary:not(:disabled):hover {
+  border-color: rgba(124, 58, 237, 0.3);
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.82), rgba(245, 243, 255, 0.92));
+  color: var(--craftr-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--craftr-shadow-sm);
+}
+
+.craftr-button-secondary:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* ─── Field ───────────────────────────────────────────────────────── */
 .craftr-field {
   display: grid;
   gap: 8px;
   font-size: 13px;
   font-weight: 800;
+  letter-spacing: -0.005em;
+  color: var(--craftr-text);
 }
 
-.craftr-field small,
-.craftr-upload-zone span {
+.craftr-field > span {
+  color: var(--craftr-text);
+  font-weight: 800;
+}
+
+.craftr-field small {
   color: var(--craftr-muted);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
 }
 
 .craftr-field input,
@@ -96,33 +209,160 @@
   width: 100%;
   border: 1px solid var(--craftr-line);
   border-radius: 14px;
-  padding: 12px;
+  padding: 13px 14px;
   background: #fff;
   color: var(--craftr-text);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+  transition: border-color 0.22s var(--craftr-ease), box-shadow 0.22s var(--craftr-ease);
+  box-shadow: var(--craftr-shadow-xs);
 }
 
+.craftr-field input:hover,
+.craftr-field textarea:hover,
+.craftr-field select:hover {
+  border-color: var(--craftr-line-strong);
+}
+
+.craftr-field input:focus,
+.craftr-field textarea:focus,
+.craftr-field select:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: var(--craftr-focus-ring);
+}
+
+.craftr-field textarea {
+  min-height: 96px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.craftr-field input::placeholder,
+.craftr-field textarea::placeholder {
+  color: var(--craftr-soft);
+  font-weight: 500;
+}
+
+/* ─── Upload zone ─────────────────────────────────────────────────── */
 .craftr-upload-zone {
-  min-height: 160px;
-  border: 1px dashed rgba(124, 58, 237, 0.34);
-  border-radius: 20px;
+  position: relative;
+  min-height: 180px;
+  border: 1.5px dashed rgba(6, 182, 212, 0.42);
+  border-radius: 22px;
   display: grid;
   place-items: center;
   align-content: center;
-  gap: 8px;
-  padding: 18px;
+  gap: 10px;
+  padding: 22px;
   color: var(--craftr-accent);
-  background: linear-gradient(135deg, rgba(236, 254, 255, 0.78), rgba(245, 243, 255, 0.88));
+  background:
+    linear-gradient(135deg, rgba(236, 254, 255, 0.88), rgba(245, 243, 255, 0.94));
   cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 0.24s var(--craftr-ease),
+    background 0.24s var(--craftr-ease),
+    box-shadow 0.24s var(--craftr-ease),
+    transform 0.24s var(--craftr-ease);
 }
 
+.craftr-upload-zone::before {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  margin-bottom: 4px;
+  color: #fff;
+  background: var(--craftr-brand-gradient);
+  box-shadow: 0 14px 30px -8px rgba(124, 58, 237, 0.38), 0 4px 12px -2px rgba(6, 182, 212, 0.22);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.24s var(--craftr-ease), box-shadow 0.24s var(--craftr-ease);
+}
+
+.craftr-upload-zone:hover {
+  border-color: rgba(124, 58, 237, 0.42);
+  background: linear-gradient(135deg, rgba(236, 254, 255, 0.96), rgba(245, 243, 255, 0.99));
+  box-shadow: var(--craftr-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.craftr-upload-zone:hover::before {
+  transform: translateY(-2px) rotate(90deg);
+  box-shadow: 0 18px 34px -6px rgba(124, 58, 237, 0.46), 0 6px 14px -2px rgba(6, 182, 212, 0.3);
+}
+
+.craftr-upload-zone strong {
+  color: var(--craftr-text);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.005em;
+}
+
+.craftr-upload-zone span {
+  color: var(--craftr-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 720px) {
   .craftr-tool-shell {
-    padding: 12px;
+    padding: 14px;
+  }
+
+  .craftr-tool-main {
+    gap: 14px;
   }
 
   .craftr-tool-header {
     align-items: flex-start;
     flex-direction: column;
-    border-radius: 18px;
+    gap: 14px;
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .craftr-tool-header h1 {
+    font-size: 22px;
+  }
+
+  .craftr-tool-header-aside {
+    width: 100%;
+  }
+
+  .craftr-card {
+    border-radius: 20px;
+    padding: 16px;
+  }
+
+  .craftr-upload-zone {
+    min-height: 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .craftr-button,
+  .craftr-card,
+  .craftr-upload-zone,
+  .craftr-upload-zone::before,
+  .craftr-field input,
+  .craftr-field textarea,
+  .craftr-field select {
+    transition: none !important;
+  }
+
+  .craftr-button:hover,
+  .craftr-upload-zone:hover,
+  .craftr-upload-zone:hover::before {
+    transform: none !important;
   }
 }
