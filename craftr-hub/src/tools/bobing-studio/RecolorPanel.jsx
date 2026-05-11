@@ -47,24 +47,29 @@ export default function RecolorPanel({
             Belum ada hasil deteksi. Klik Smart Detect Colors untuk produk kombinasi 2 warna atau lebih.
           </div>
         ) : (
-          detectedColors.map((item, index) => {
-            const hex = normalizeHex(item.originalHex);
-            return (
-              <label key={index} className="detect-item">
-                <input
-                  type="checkbox"
-                  checked={item.selected !== false}
-                  onChange={() => onToggleDetectedColor(index)}
-                  disabled={busy}
-                />
-                <span className="detect-swatch" style={{ background: hex }} />
-                <span className="detect-copy">
-                  <strong>{item.originalColor} {hex}</strong>
-                  <span>{item.partDescription}</span>
-                </span>
-              </label>
-            );
-          })
+          <>
+            <div className="hint" style={{ margin: 0 }}>
+              Checklist area yang ingin diubah warnanya. Area yang tidak dicentang akan dipertahankan warna aslinya.
+            </div>
+            {detectedColors.map((item, index) => {
+              const hex = normalizeHex(item.originalHex);
+              return (
+                <label key={index} className="detect-item">
+                  <input
+                    type="checkbox"
+                    checked={item.selected !== false}
+                    onChange={() => onToggleDetectedColor(index)}
+                    disabled={busy}
+                  />
+                  <span className="detect-swatch" style={{ background: hex }} />
+                  <span className="detect-copy">
+                    <strong>{item.originalColor} {hex}</strong>
+                    <span>{item.partDescription}</span>
+                  </span>
+                </label>
+              );
+            })}
+          </>
         )}
       </div>
 

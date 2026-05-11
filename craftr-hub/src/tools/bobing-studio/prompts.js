@@ -73,35 +73,143 @@ export function buildCatalogPrompt({ style, subject, pose, productName, productH
   ].filter(Boolean).join('\n\n');
 }
 
-export function buildRecolorPrompt({ targetHex, colorName, productName, recolorRegion, detectedRegionsText }) {
-  return `
-TASK: Create a new marketplace color variant from the uploaded fashion product image.
-${productName ? `PRODUCT NAME: ${productName}.` : ''}
+/**
+ * Format a single detected region entry.
+ * Matches HTML format: "N. <color name> (<hex>) on <part description>"
+ */
+function formatRegion(item, index) {
+  const color = item.originalColor || item.colorName || `color ${index + 1}`;
+  const hex = (item.originalHex || item.hex || '').toLowerCase();
+  const part = item.partDescription || item.area || 'garment region';
+  return `${index + 1}. ${color} (${hex}) on ${part}`;
+}
+
+/**
+ * Build an explicit region-aware recolor prompt.
+ *
+ * When the user has detected regions AND made explicit selections, the prompt
+ * splits into two unambiguous sections:
+ *   - RECOLOR THESE REGIONS ONLY: <selected>
+ *   - MUST KEEP UNCHANGED: <unselected>
+ *
+ * This prevents the AI from misinterpreting "change the main fabric" as a
+ * global recolor when the user actually wants a surgical change to a specific
+ * detected area only.
+ *
+ * `selectedRegions` and `unselectedRegions` are arrays of
+ *   { originalColor, originalHex, partDescription }
+ * Pass both so the prompt can build opposing preserve/recolor instructions.
+ *
+ * `recolorRegion` is kept as optional user-supplied free-text (extra note).
+ */
+export function buildRecolorPrompt({
+  targetHex,
+  colorName,
+  productName,
+  recolorRegion,
+  selectedRegions = [],
+  unselectedRegions = [],
+}) {
+  const targetLabel = colorName ? `${colorName} (${targetHex})` : targetHex;
+  const hasDetected = selectedRegions.length > 0 || unselectedRegions.length > 0;
+
+  // Build region instructions depending on what the user has selected.
+  let regionBlock;
+
+  if (selectedRegions.length > 0 && unselectedRegions.length > 0) {
+    // Mixed case: some regions are selected, others must be preserved.
+    // This is the multi-color product case and needs the strictest isolation.
+    const recolorList = selectedRegions.map(formatRegion).join('\n');
+    const preserveList = unselectedRegions.map(formatRegion).join('\n');
+
+    regionBlock = `
+RECOLOR THESE REGIONS ONLY — change to ${targetLabel}:
+${recolorList}
+
+MUST KEEP UNCHANGED (preserve the exact original color pixel-faithful, do NOT tint, do NOT shift hue):
+${preserveList}
+
+STRICT ISOLATION RULES:
+- Only the regions listed under "RECOLOR THESE REGIONS ONLY" may change color.
+- Every region listed under "MUST KEEP UNCHANGED" must retain its original hex color exactly.
+- Do NOT apply the new color globally across the whole garment.
+- Do NOT let the new color bleed into preserved regions, even along the boundary between them.
+- Keep the spatial boundary between recolored and preserved regions sharp and accurate.
+- If you are uncertain where a boundary lies, prefer preserving the original color over over-applying the new color.
+`.trim();
+  } else if (selectedRegions.length > 0) {
+    // All detected regions are selected — recolor all of them to target.
+    const recolorList = selectedRegions.map(formatRegion).join('\n');
+    regionBlock = `
+RECOLOR THESE REGIONS — change to ${targetLabel}:
+${recolorList}
+
+PRESERVE everything not listed above: skin, face, hijab styling (unless part of the listed region), hair, model identity, background, props, buttons, labels, embroidery, print motifs, stitching, and all non-garment elements.
+`.trim();
+  } else if (unselectedRegions.length > 0) {
+    // Smart-detect ran but user unchecked everything. Nothing to recolor.
+    // This should ideally be blocked in UI, but guard anyway.
+    regionBlock = `
+NO RECOLOR TARGET SELECTED.
+The user deselected every detected region. Return the image unchanged.
+`.trim();
+  } else {
+    // No Smart Detect was used. Fall back to the original free-text behavior.
+    regionBlock = `
 RECOLOR TARGET:
-- Change the selected garment fabric area to ${colorName || targetHex} (${targetHex}).
+- Change the selected garment fabric area to ${targetLabel}.
 - ${recolorRegion || 'Change only the main garment fabric color.'}
-${detectedRegionsText ? `SMART DETECTED REGIONS TO RECOLOR:\n${detectedRegionsText}` : 'SMART DETECTED REGIONS TO RECOLOR: none selected; infer the main garment fabric only.'}
-PRESERVE:
+SMART DETECTED REGIONS TO RECOLOR: none; infer the main garment fabric only.
+`.trim();
+  }
+
+  const userNote = hasDetected && recolorRegion && recolorRegion.trim()
+    ? `\nADDITIONAL USER NOTE: ${recolorRegion.trim()}\n`
+    : '';
+
+  return `
+TASK: Create a new marketplace color variant from the uploaded fashion product image by performing a precise, region-scoped color swap.
+${productName ? `PRODUCT NAME: ${productName}.` : ''}
+
+${regionBlock}
+${userNote}
+PRESERVE (apply to the entire image):
 - Keep the exact garment design, motif layout, embroidery, seams, buttons, trims, label, pockets, fabric texture, folds, shadows, highlights, silhouette, and camera angle.
 - Preserve model/mannequin identity or product display, background, lighting direction, composition, and realism.
-- Do not recolor skin, face, hijab unless it is the garment being edited, background, props, labels, buttons, embroidery, or printed motifs unless explicitly requested.
-- For multi-color products, recolor ONLY the selected detected region(s). Keep all unselected colors unchanged.
+- Do not recolor skin, face, hair, hijab (unless the hijab is the explicitly listed region), background, props, labels, buttons, embroidery, or printed motifs.
+- For multi-color products, recolor ONLY the selected regions. Every unselected color stays identical to the source.
+
 QUALITY:
 - The new color must look naturally dyed into the fabric, with realistic texture and lighting.
 - Result must look like a real unedited product photo for marketplace color variants.
+
 OUTPUT: 1:1 square PNG, photorealistic, high-resolution, no text, no watermark, no graphics.
   `.trim();
 }
 
 export const DETECT_COLORS_PROMPT = `
-Analyze the uploaded fashion product image for recolor preparation.
-Identify the dominant editable garment color regions only.
-Return JSON only, no markdown, as an array of 1 to 6 objects.
+Analyze the uploaded fashion product image for region-aware recolor preparation.
+Identify every dominant, visually distinct garment color region that could be recolored independently.
+
+Return JSON ONLY, no markdown, as an array of 1 to 6 objects sorted from largest region to smallest.
+
 Each object must have:
-- originalColor: short color name
-- originalHex: closest 6-digit HEX color
-- partDescription: specific garment area, for example "main body panel", "sleeves", "outer layer", "inner panel", "collar trim", "hijab fabric", "skirt panel"
-- editable: true if this region is garment fabric suitable for recolor
-Exclude skin, face, hands, background, floor, shadows, jewelry, buttons, labels, price tags, and non-garment props.
-For products with 2 or more color combinations, separate each color region clearly.
+- originalColor: short human color name (e.g. "charcoal grey", "sage green", "dusty pink", "off white")
+- originalHex: the closest 6-digit HEX color of the fabric in that region
+- partDescription: a specific spatial description of WHERE this region is on the garment, so a downstream editor can target it precisely. Examples:
+    "upper body / torso front panel"
+    "lower body / skirt section"
+    "left sleeve from shoulder to cuff"
+    "outer layer / abaya overcoat"
+    "inner dress visible under the outer layer"
+    "collar and neckline trim"
+    "hijab / headscarf fabric"
+    "hem band at the bottom edge"
+    "yoke panel across the chest"
+  Always describe the ACTUAL spatial location, never a generic "main color".
+- editable: true if this region is garment fabric suitable for a clean fabric recolor (false for skin/face/accessories/background).
+
+For products with 2 or more color combinations (e.g. grey top + black skirt), list EACH color block as its own object with its own spatial region — do not merge them into one. Different visible color blocks MUST become different entries so the user can pick one at a time.
+
+Exclude skin, face, hands, background, floor, shadows, jewelry, buttons, hardware, labels, price tags, watermarks, and non-garment props.
 `.trim();

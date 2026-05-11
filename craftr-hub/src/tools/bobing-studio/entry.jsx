@@ -165,19 +165,17 @@ async function detectColorsApi(baseImage, baseMime) {
 }
 
 /**
- * Build the detected regions description that the HTML version used.
- * Format: "1. red (#ff0000) on main body panel"
- * This is what the AI expects — each line describes WHERE a region is,
- * not where it should be recolored to (that's already in the TASK line).
+ * Split detected colors into the two groups the new recolor prompt expects:
+ * regions the user wants recolored vs. regions that must be preserved.
  */
-function formatDetectedRegions(selectedRegions) {
-  if (!selectedRegions.length) return '';
-  return selectedRegions.map((item, index) => {
-    const color = item.originalColor || item.colorName || `color ${index + 1}`;
-    const hex = normalizeHex(item.originalHex || item.hex || '');
-    const part = item.partDescription || item.area || 'garment region';
-    return `${index + 1}. ${color} (${hex}) on ${part}`;
-  }).join('\n');
+function partitionDetectedRegions(detectedColors) {
+  const selected = [];
+  const unselected = [];
+  for (const item of detectedColors) {
+    if (item.selected === false) unselected.push(item);
+    else selected.push(item);
+  }
+  return { selected, unselected };
 }
 
 /* ─── Main Component ─────────────────────────────────────────────────── */
@@ -317,14 +315,14 @@ function BobingStudio() {
         shotInstruction: '',
       });
     }
-    const selectedRegions = detectedColors.filter((c) => c.selected);
-    const detectedRegionsText = formatDetectedRegions(selectedRegions);
+    const { selected, unselected } = partitionDetectedRegions(detectedColors);
     return buildRecolorPrompt({
       targetHex: normalizeHex(targetColor),
       colorName: colorName.trim(),
       productName,
       recolorRegion,
-      detectedRegionsText,
+      selectedRegions: selected,
+      unselectedRegions: unselected,
     });
   }
 
@@ -388,17 +386,17 @@ function BobingStudio() {
     setBusy(true);
     setBusyMessage('Generating variant 1/6');
     try {
-      const selectedRegions = detectedColors.filter((c) => c.selected);
+      const { selected, unselected } = partitionDetectedRegions(detectedColors);
       for (let i = 0; i < QUICK_RECOLOR_COLORS.length; i++) {
         setBusyMessage(`Generating variant ${i + 1}/${QUICK_RECOLOR_COLORS.length}`);
         const [name, hex] = QUICK_RECOLOR_COLORS[i];
-        const detectedRegionsText = formatDetectedRegions(selectedRegions);
         const prompt = buildRecolorPrompt({
           targetHex: hex,
           colorName: name,
           productName,
           recolorRegion,
-          detectedRegionsText,
+          selectedRegions: selected,
+          unselectedRegions: unselected,
         });
         const result = await requestImage(baseImage, baseMime, prompt);
         setGeneratedImage(result);
