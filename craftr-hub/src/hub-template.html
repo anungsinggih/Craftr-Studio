@@ -421,7 +421,7 @@
 
       .hub {
         grid-template-columns: 1fr;
-        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr) calc(72px + var(--safe-bottom));
         height: 100dvh;
         min-height: 0;
         gap: 0;
@@ -518,17 +518,6 @@
         height: auto;
         min-height: 0;
         box-shadow: none;
-        padding-bottom: calc(72px + var(--safe-bottom));
-      }
-
-      iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: calc(72px + var(--safe-bottom));
-        width: 100%;
-        height: auto;
       }
 
       .status { display: none; }

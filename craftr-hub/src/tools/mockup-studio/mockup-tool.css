@@ -438,7 +438,7 @@
 @media (max-width: 980px) {
   .mockup-layout {
     grid-template-columns: 1fr;
-    padding-bottom: 24px;
+    padding-bottom: 20px;
   }
 
   .mockup-settings {
