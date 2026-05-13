@@ -683,7 +683,7 @@ const AI_Craftr_Fixed = () => {
 
       <div
         className={`craftr-preview-pane relative flex flex-col justify-center items-center overflow-hidden shadow-inner bg-slate-900 transition-all duration-300 ${
-          isFullScreen ? 'fixed inset-0 z-50 h-full w-full' : 'order-1 md:order-2 w-full md:flex-1 h-[45vh] md:h-full shrink-0'
+          isFullScreen ? 'fixed inset-0 z-50 h-full w-full' : 'order-1 md:order-2 w-full md:flex-1 min-h-[40vh] h-[45vh] md:h-full shrink-0'
         }`}
       >
         <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
@@ -792,7 +792,7 @@ const AI_Craftr_Fixed = () => {
       </div>
 
       <div
-        className={`craftr-control-sheet bg-white z-30 flex flex-col order-2 md:order-1 w-full md:w-[460px] xl:w-[500px] flex-1 md:h-full shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] md:shadow-xl rounded-t-3xl md:rounded-none overflow-hidden relative -mt-6 md:mt-0 ${
+        className={`craftr-control-sheet bg-white z-30 flex flex-col order-2 md:order-1 w-full md:w-[420px] lg:w-[460px] xl:w-[500px] flex-1 md:h-full shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] md:shadow-xl rounded-t-3xl md:rounded-none overflow-hidden relative -mt-4 md:mt-0 ${
           isFullScreen ? 'hidden' : 'flex'
         }`}
       >
@@ -916,13 +916,13 @@ const AI_Craftr_Fixed = () => {
                     className="w-full p-3 rounded-lg focus:outline-none h-28 text-sm resize-none"
                   />
                 </div>
-                <div className="flex gap-2 overflow-x-auto mt-3 pb-1">
+                <div className="flex gap-2 overflow-x-auto mt-3 pb-1 snap-x snap-mandatory scroll-pl-1">
                   {PROMPT_IDEAS.map((idea) => (
                     <button
                       key={idea}
                       type="button"
                       onClick={() => setPrompt(idea)}
-                      className="shrink-0 max-w-[250px] truncate text-left text-[11px] font-semibold text-slate-600 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 rounded-full px-3 py-2 transition-colors"
+                      className="snap-start shrink-0 max-w-[250px] truncate text-left text-[11px] font-semibold text-slate-600 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-200 rounded-full px-3 py-2 transition-colors"
                     >
                       {idea}
                     </button>
@@ -1027,7 +1027,7 @@ const AI_Craftr_Fixed = () => {
                     </div>
                   )}
 
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {QUALITY_RULES.map((rule) => (
                       <div key={rule.label} className="bg-slate-50 border border-slate-200 rounded-xl p-3 min-h-[86px]">
                         <div className="flex items-center gap-1 text-green-700 text-[10px] font-bold mb-1">

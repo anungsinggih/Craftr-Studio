@@ -680,6 +680,35 @@ label {
   color: var(--craftr-muted) !important;
 }
 
+/* ─── Mobile touch refinements ──────────────────────────────────────── */
+@media (max-width: 980px) {
+  textarea,
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  input[type="email"],
+  input[type="url"],
+  input[type="password"],
+  select {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+
+  .craftr-control-sheet,
+  .craftr-tool-header,
+  .craftr-card,
+  .craftr-toolbar,
+  .card,
+  .group,
+  .glass-panel,
+  .sidebar,
+  .panel,
+  .viewer,
+  .compare-panel {
+    box-shadow: var(--craftr-shadow-sm) !important;
+  }
+}
+
 /* ─── Mobile polish ─────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .craftr-control-sheet,
@@ -697,5 +726,14 @@ label {
     border-color: var(--craftr-line) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+@media (max-width: 480px) {
+  html, body {
+    background:
+      radial-gradient(800px 400px at 12% -4%, rgba(6, 182, 212, 0.06), transparent 60%),
+      radial-gradient(600px 300px at 94% -2%, rgba(124, 58, 237, 0.05), transparent 58%),
+      linear-gradient(180deg, #ffffff 0%, var(--craftr-bg) 52%, #edf1f9 100%);
   }
 }
