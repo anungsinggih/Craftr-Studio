@@ -581,7 +581,7 @@ Before outputting, verify: Is the printed artwork on the board face an EXACT, un
                       type="button"
                       onClick={() => setSelectedIdx(index)}
                     >
-                      <img src={url} alt={`Variation ${index + 1}`} />
+                      <img src={url} alt={`Variation ${index + 1}`} loading="lazy" />
                       <span>V{index + 1}</span>
                     </button>
                   ))}

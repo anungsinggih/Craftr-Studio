@@ -639,6 +639,7 @@ textarea {
 
 .canvas {
   position: relative;
+  isolation: isolate;
   width: 100%;
   aspect-ratio: 1 / 1;
   min-height: 0;
@@ -665,6 +666,7 @@ textarea {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  transform: translateZ(0);
   z-index: 2;
 }
 
@@ -874,6 +876,17 @@ textarea {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Performance: content-visibility for off-viewport sections */
+.compare-panel {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
+.history {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 110px;
 }
 
 /* ─── Responsive ──────────────────────────────────────────────────── */

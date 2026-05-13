@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f5fa" />
   <title>Craftr Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"></noscript>
   <style>
     :root {
       --font: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -323,24 +325,57 @@
       border-radius: 28px;
       background: var(--panel);
       box-shadow: var(--shadow-md);
+      contain: content;
     }
 
     iframe {
-      display: none;
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
       background: white;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      contain: strict;
     }
 
     iframe.active {
-      display: block;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      contain: content;
       animation: fadeIn 0.2s ease;
     }
 
+    iframe.is-loading {
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* GPU layer promotion: translate3d forces compositing without visual change */
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translate3d(0, 0, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    /* ─── Viewport loading shimmer ──────────────────────────────────── */
+    .viewport-loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: linear-gradient(90deg, #f4f5fa 25%, #eef1f6 50%, #f4f5fa 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: inherit;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     .status {
@@ -371,6 +406,7 @@
       border-radius: 50%;
       background: var(--good);
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22), 0 0 18px rgba(16, 185, 129, 0.6);
+      will-change: box-shadow;
       animation: pulse 2.4s ease-in-out infinite;
     }
 
@@ -537,6 +573,8 @@
         animation: none !important;
       }
       .tab:hover { transform: none; }
+      iframe.active { animation: none !important; }
+      .viewport-loading::after { animation: none !important; }
     }
   </style>
 </head>
@@ -629,7 +667,17 @@
       frame.id = app.id;
       frame.title = app.label;
       frame.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen');
+      frame.classList.add('is-loading');
       frame.srcdoc = app.html;
+      const timeout = setTimeout(() => {
+        frame.classList.remove('is-loading');
+        viewport.classList.remove('viewport-loading');
+      }, 8000);
+      frame.addEventListener('load', () => {
+        clearTimeout(timeout);
+        frame.classList.remove('is-loading');
+        viewport.classList.remove('viewport-loading');
+      });
       viewport.insertBefore(frame, viewport.firstChild);
       frames.set(app.id, frame);
       return frame;
@@ -638,7 +686,11 @@
     const setActive = (id) => {
       activeId = id;
       const app = apps.find((item) => item.id === id);
-      if (!frames.has(id)) createFrame(app);
+
+      if (!frames.has(id)) {
+        viewport.classList.add('viewport-loading');
+        createFrame(app);
+      }
 
       frames.forEach((frame, frameId) => {
         frame.classList.toggle('active', frameId === id);

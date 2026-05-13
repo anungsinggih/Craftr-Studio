@@ -391,6 +391,7 @@ label {
 .bg-violet-600:hover,
 .bg-purple-600:hover,
 .bg-pink-600:hover {
+  will-change: transform, box-shadow;
   filter: saturate(1.12) brightness(1.03);
   transform: translateY(-1px);
   box-shadow: 0 18px 40px -10px rgba(124, 58, 237, 0.44), 0 8px 18px -4px rgba(6, 182, 212, 0.26) !important;
@@ -678,6 +679,19 @@ label {
 .scene-placeholder span,
 .mockup-upload span {
   color: var(--craftr-muted) !important;
+}
+
+/* --- Performance: Containment and GPU compositing --- */
+.craftr-card {
+  contain: style;
+}
+
+.card,
+.group,
+.glass-panel,
+.panel,
+.viewer {
+  contain: layout style;
 }
 
 /* ─── Mobile touch refinements ──────────────────────────────────────── */
