@@ -1,4 +1,8 @@
-/* Auto-generated Tailwind utility replacements for Product Generator */
+/* =============================================================================
+   PRODUCT GENERATOR UTILITY CLASSES
+   Static replacement for Tailwind CDN. Only includes classes used in entry.jsx.
+   IMPORTANT: When adding new utility classes in entry.jsx, add them here too.
+   ============================================================================= */
 
 /* ===== LAYOUT ===== */
 .flex { display: flex; }

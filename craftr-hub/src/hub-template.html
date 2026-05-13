@@ -325,7 +325,7 @@
       border-radius: 28px;
       background: var(--panel);
       box-shadow: var(--shadow-md);
-      content-visibility: auto;
+      contain: content;
     }
 
     iframe {
@@ -346,15 +346,16 @@
       visibility: visible;
       opacity: 1;
       pointer-events: auto;
-      will-change: opacity;
       contain: content;
       animation: fadeIn 0.2s ease;
     }
 
     iframe.is-loading {
       opacity: 0;
+      will-change: opacity;
     }
 
+    /* GPU layer promotion: translate3d forces compositing without visual change */
     @keyframes fadeIn {
       from { opacity: 0; transform: translate3d(0, 0, 0); }
       to { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -668,7 +669,12 @@
       frame.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen');
       frame.classList.add('is-loading');
       frame.srcdoc = app.html;
+      const timeout = setTimeout(() => {
+        frame.classList.remove('is-loading');
+        viewport.classList.remove('viewport-loading');
+      }, 8000);
       frame.addEventListener('load', () => {
+        clearTimeout(timeout);
         frame.classList.remove('is-loading');
         viewport.classList.remove('viewport-loading');
       });

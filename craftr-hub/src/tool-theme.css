@@ -682,7 +682,10 @@ label {
 }
 
 /* --- Performance: Containment and GPU compositing --- */
-.craftr-card,
+.craftr-card {
+  contain: style;
+}
+
 .card,
 .group,
 .glass-panel,
