@@ -579,6 +579,7 @@
 @media (max-width: 980px) {
   .scene-grid {
     grid-template-columns: 1fr;
+    padding-bottom: 24px;
   }
 
   .scene-result-card {

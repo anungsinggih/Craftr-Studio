@@ -1003,6 +1003,7 @@ textarea {
     min-height: 0;
     overflow-y: auto;
     padding: 14px;
+    padding-bottom: 24px;
     background: transparent;
   }
 
