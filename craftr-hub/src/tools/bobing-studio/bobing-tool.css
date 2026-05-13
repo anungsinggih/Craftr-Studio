@@ -885,18 +885,6 @@ textarea {
   }
 }
 
-/* Narrow tablet: stage 2-col tighter before single-column collapse */
-@media (max-width: 900px) and (min-width: 861px) {
-  .stage {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .canvas {
-    max-height: min(420px, 50dvh);
-  }
-}
-
 /* Tablet: sidebar stacks above main, stage goes single-column */
 @media (max-width: 1100px) {
   .shell {
@@ -915,6 +903,18 @@ textarea {
 
   .canvas {
     max-height: min(520px, 54dvh);
+  }
+}
+
+/* Narrow tablet: stage 2-col tighter before single-column collapse */
+@media (max-width: 900px) and (min-width: 861px) {
+  .stage {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .canvas {
+    max-height: min(420px, 50dvh);
   }
 }
 
