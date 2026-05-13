@@ -329,21 +329,52 @@
     }
 
     iframe {
-      display: none;
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
       background: white;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      contain: strict;
     }
 
     iframe.active {
-      display: block;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      will-change: opacity;
+      contain: content;
       animation: fadeIn 0.2s ease;
     }
 
+    iframe.is-loading {
+      opacity: 0;
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translate3d(0, 0, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    /* ─── Viewport loading shimmer ──────────────────────────────────── */
+    .viewport-loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: linear-gradient(90deg, #f4f5fa 25%, #eef1f6 50%, #f4f5fa 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: inherit;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     .status {
@@ -540,6 +571,8 @@
         animation: none !important;
       }
       .tab:hover { transform: none; }
+      iframe.active { animation: none !important; }
+      .viewport-loading::after { animation: none !important; }
     }
   </style>
 </head>
@@ -632,7 +665,12 @@
       frame.id = app.id;
       frame.title = app.label;
       frame.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen');
+      frame.classList.add('is-loading');
       frame.srcdoc = app.html;
+      frame.addEventListener('load', () => {
+        frame.classList.remove('is-loading');
+        viewport.classList.remove('viewport-loading');
+      });
       viewport.insertBefore(frame, viewport.firstChild);
       frames.set(app.id, frame);
       return frame;
@@ -641,7 +679,11 @@
     const setActive = (id) => {
       activeId = id;
       const app = apps.find((item) => item.id === id);
-      if (!frames.has(id)) createFrame(app);
+
+      if (!frames.has(id)) {
+        viewport.classList.add('viewport-loading');
+        createFrame(app);
+      }
 
       frames.forEach((frame, frameId) => {
         frame.classList.toggle('active', frameId === id);
