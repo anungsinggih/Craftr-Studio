@@ -863,7 +863,7 @@ const AI_Craftr_Fixed = () => {
           </div>
         </div>
 
-        <div className="p-5 flex-1 overflow-y-auto pb-10 md:pb-5">
+        <div className="p-5 flex-1 overflow-y-auto pb-16 md:pb-5">
           {activeTab === 'design' && (
             <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-4">
               <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl">

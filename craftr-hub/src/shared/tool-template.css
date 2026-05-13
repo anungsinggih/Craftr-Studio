@@ -329,6 +329,7 @@
 @media (max-width: 980px) {
   .craftr-tool-shell {
     padding: 18px;
+    padding-bottom: 32px;
   }
 
   .craftr-tool-main {
@@ -402,6 +403,7 @@
 @media (max-width: 480px) {
   .craftr-tool-shell {
     padding: 10px;
+    padding-bottom: 28px;
   }
 
   .craftr-tool-main {
