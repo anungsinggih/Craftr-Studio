@@ -119,7 +119,7 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
-      padding-bottom: 16px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--line);
     }
 
@@ -143,7 +143,7 @@
 
     .brand-text h1 {
       margin: 0;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 900;
       line-height: 1.1;
       letter-spacing: -0.02em;
@@ -183,7 +183,7 @@
       display: flex;
       flex: 1;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       min-height: 0;
       padding: 0;
       overflow-y: auto;
@@ -205,7 +205,7 @@
       color: var(--ink-2);
       background: transparent;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: -0.005em;
       transition: border-color 0.22s var(--ease), background 0.22s var(--ease), color 0.22s var(--ease), transform 0.22s var(--ease), box-shadow 0.22s var(--ease);
       display: flex;
@@ -272,6 +272,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      letter-spacing: -0.01em;
     }
 
     .tab.active .tab-text {
@@ -306,6 +307,11 @@
       font-size: 10px;
       font-weight: 900;
       letter-spacing: 0.02em;
+      transition: transform 0.22s var(--ease);
+    }
+
+    .sidebar-footer .pill:hover {
+      transform: scale(1.04);
     }
 
     /* ─── Viewport ──────────────────────────────────────────────────── */
@@ -325,10 +331,13 @@
       height: 100%;
       border: 0;
       background: white;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
 
     iframe.active {
       display: block;
+      opacity: 1;
     }
 
     .status {
@@ -424,7 +433,7 @@
       }
 
       .tab {
-        min-height: 54px;
+        min-height: 58px;
         justify-content: center;
         display: grid;
         place-items: center;
@@ -437,6 +446,22 @@
       .tab:hover { transform: none; }
 
       .tab.active::before { display: none; }
+
+      .tab.active {
+        transform: scale(1.02);
+      }
+
+      .tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--brand-gradient);
+      }
 
       .tab-icon {
         width: 26px;
@@ -458,6 +483,47 @@
       }
 
       .status { display: none; }
+    }
+
+    /* ─── Tablet refinement ─────────────────────────────────────────── */
+    @media (max-width: 768px) and (min-width: 481px) {
+      .tab {
+        min-height: 58px;
+      }
+
+      .tab-icon {
+        width: 28px;
+        height: 28px;
+        flex-basis: 28px;
+      }
+
+      .tabs {
+        gap: 8px;
+        padding: 10px 12px calc(10px + var(--safe-bottom));
+      }
+    }
+
+    /* ─── Small phone refinement ────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .hub {
+        padding: 0;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+        border-radius: 10px;
+        font-size: 10px;
+      }
+
+      .tab-text {
+        font-size: 9px;
+      }
+
+      .tabs {
+        padding: 6px 8px calc(6px + var(--safe-bottom));
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
