@@ -935,86 +935,6 @@ textarea {
   }
 }
 
-@media (max-width: 480px) {
-  .shell {
-    gap: 0;
-  }
-
-  .sidebar {
-    border-radius: 22px 22px 0 0;
-  }
-
-  .brand {
-    padding: 12px 14px 10px;
-  }
-
-  .brand h1 {
-    font-size: 14px;
-  }
-
-  .controls {
-    padding: 10px;
-  }
-
-  .group {
-    border-radius: 12px;
-    padding: 10px;
-  }
-
-  .swatches,
-  .favorite-colors {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-  }
-
-  .detect-item {
-    grid-template-columns: 18px 28px minmax(0, 1fr);
-    gap: 8px;
-    padding: 8px;
-    border-radius: 10px;
-  }
-
-  .detect-swatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-  }
-
-  .btn {
-    min-height: 42px;
-    font-size: 12px;
-  }
-
-  .btn.primary {
-    min-height: 46px;
-  }
-
-  .topbar {
-    border-radius: 14px;
-    padding: 10px 12px;
-  }
-
-  .topbar strong {
-    font-size: 13px;
-  }
-
-  .viewer {
-    border-radius: 14px;
-    padding: 10px;
-  }
-
-  .history-item {
-    flex: 0 0 80px;
-    height: 80px;
-    border-radius: 12px;
-  }
-
-  .toast {
-    border-radius: 14px;
-    padding: 12px 14px;
-  }
-}
-
 @media (max-width: 860px) {
   html,
   body {
@@ -1131,6 +1051,86 @@ textarea {
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     max-width: none;
     border-radius: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shell {
+    gap: 0;
+  }
+
+  .sidebar {
+    border-radius: 22px 22px 0 0;
+  }
+
+  .brand {
+    padding: 12px 14px 10px;
+  }
+
+  .brand h1 {
+    font-size: 14px;
+  }
+
+  .controls {
+    padding: 10px;
+  }
+
+  .group {
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .swatches,
+  .favorite-colors {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .detect-item {
+    grid-template-columns: 18px 28px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .detect-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+  }
+
+  .btn {
+    min-height: 42px;
+    font-size: 12px;
+  }
+
+  .btn.primary {
+    min-height: 46px;
+  }
+
+  .topbar {
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+
+  .topbar strong {
+    font-size: 13px;
+  }
+
+  .viewer {
+    border-radius: 14px;
+    padding: 10px;
+  }
+
+  .history-item {
+    flex: 0 0 80px;
+    height: 80px;
+    border-radius: 12px;
+  }
+
+  .toast {
+    border-radius: 14px;
+    padding: 12px 14px;
   }
 }
 

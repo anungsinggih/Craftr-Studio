@@ -709,15 +709,6 @@ label {
   }
 }
 
-@media (max-width: 480px) {
-  html, body {
-    background:
-      radial-gradient(800px 400px at 12% -4%, rgba(6, 182, 212, 0.06), transparent 60%),
-      radial-gradient(600px 300px at 94% -2%, rgba(124, 58, 237, 0.05), transparent 58%),
-      linear-gradient(180deg, #ffffff 0%, var(--craftr-bg) 52%, #edf1f9 100%);
-  }
-}
-
 /* ─── Mobile polish ─────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .craftr-control-sheet,
@@ -735,5 +726,14 @@ label {
     border-color: var(--craftr-line) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+@media (max-width: 480px) {
+  html, body {
+    background:
+      radial-gradient(800px 400px at 12% -4%, rgba(6, 182, 212, 0.06), transparent 60%),
+      radial-gradient(600px 300px at 94% -2%, rgba(124, 58, 237, 0.05), transparent 58%),
+      linear-gradient(180deg, #ffffff 0%, var(--craftr-bg) 52%, #edf1f9 100%);
   }
 }
