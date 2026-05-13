@@ -102,8 +102,20 @@
   transition: box-shadow 0.3s var(--craftr-ease);
 }
 
-.craftr-card:hover {
+/* Optimized hover shadow using pseudo-element opacity transition */
+.craftr-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
   box-shadow: var(--craftr-shadow-md);
+  opacity: 0;
+  transition: opacity 0.3s var(--craftr-ease);
+}
+
+.craftr-card:hover::after {
+  opacity: 1;
 }
 
 /* ─── Toolbar ─────────────────────────────────────────────────────── */
@@ -445,6 +457,7 @@
 @media (prefers-reduced-motion: reduce) {
   .craftr-button,
   .craftr-card,
+  .craftr-card::after,
   .craftr-upload-zone,
   .craftr-upload-zone::before,
   .craftr-field input,

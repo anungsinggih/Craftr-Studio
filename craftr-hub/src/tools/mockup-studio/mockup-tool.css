@@ -442,6 +442,8 @@
 
   .mockup-settings {
     position: static;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
   }
 }
 

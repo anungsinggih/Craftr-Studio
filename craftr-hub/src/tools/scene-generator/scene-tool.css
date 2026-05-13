@@ -553,6 +553,12 @@
   }
 }
 
+/* Performance: content-visibility for heavy sections */
+.scene-prompt-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
 @media (max-width: 1180px) {
   .scene-grid {
     grid-template-columns: minmax(0, 1fr) minmax(380px, 0.9fr);

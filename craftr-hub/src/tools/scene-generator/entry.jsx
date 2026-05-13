@@ -389,7 +389,7 @@ function SceneGenerator() {
                 <p className="scene-empty">No image uploaded yet.</p>
               ) : uploadedFiles.map((item, index) => (
                 <article className="scene-file" key={item.id}>
-                  <img src={item.previewUrl} alt={`Uploaded ${index + 1}`} />
+                  <img src={item.previewUrl} alt={`Uploaded ${index + 1}`} loading="lazy" />
                   <div>
                     <strong>Image {index + 1}</strong>
                     <span>{truncate(item.file.name, 34)}</span>

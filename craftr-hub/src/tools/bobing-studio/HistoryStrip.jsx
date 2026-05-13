@@ -13,7 +13,7 @@ export default function HistoryStrip({ history, generatedImage, onSelect }) {
           title={item.label}
           onClick={() => onSelect(item)}
         >
-          <img src={item.image} alt={item.label} />
+          <img src={item.image} alt={item.label} loading="lazy" />
         </button>
       ))}
     </section>
