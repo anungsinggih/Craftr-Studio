@@ -17,7 +17,7 @@
 
 /* ─── Preview card (shared) ───────────────────────────────────────── */
 .mockup-preview-card {
-  min-height: 540px;
+  min-height: clamp(360px, 45vw, 540px);
   display: grid;
   place-items: center;
   background:
@@ -79,7 +79,7 @@
 .mockup-disc,
 .mockup-result {
   position: relative;
-  width: min(540px, 100%);
+  width: min(540px, 90%);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -428,6 +428,13 @@
 }
 
 /* ─── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .mockup-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 16px;
+  }
+}
+
 @media (max-width: 980px) {
   .mockup-layout {
     grid-template-columns: 1fr;
@@ -448,15 +455,62 @@
     grid-template-columns: 1fr;
   }
 
+  .mockup-thumbs {
+    gap: 10px;
+  }
+
   .mockup-thumbs button {
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     border-radius: 14px;
   }
 
   .mockup-disc img,
   .mockup-result img {
     object-fit: contain;
+  }
+}
+
+@media (max-width: 480px) {
+  .mockup-preview-card {
+    min-height: 320px;
+    padding: 16px;
+  }
+
+  .mockup-card-head h2,
+  .mockup-settings h2 {
+    font-size: 15px;
+  }
+
+  .mockup-thumbs {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .mockup-thumbs button {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+  }
+
+  .mockup-slider > span {
+    font-size: 11px;
+  }
+
+  .mockup-generate {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .mockup-segmented button {
+    min-height: 38px;
+    font-size: 11.5px;
+    padding: 6px 8px;
+  }
+
+  .mockup-disc,
+  .mockup-result {
+    width: 100%;
   }
 }
 
